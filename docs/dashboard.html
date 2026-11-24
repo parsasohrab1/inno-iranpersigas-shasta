@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>داشبورد اعتبارسنجی LCIS</title>
+<style>
+:root { --ink:#0f2233; --mut:#5a6b7a; --line:#d7e0e8; --acc:#1b6b7a; --ok:#1e7a46; --warn:#a06a00; --bg:#f4f7f9; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:Tahoma, Vazirmatn, sans-serif; color:var(--ink); background:var(--bg); }
+main { max-width:1100px; margin:0 auto; padding:clamp(12px, 3vw, 32px); }
+h1 { font-size:clamp(1.3rem, 4.5vw, 2rem); margin:.2em 0; }
+.sub { color:var(--mut); font-size:clamp(.8rem, 2.5vw, .95rem); margin-bottom:1.2em; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap:14px; }
+.card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+.card h3 { margin:.1em 0 .5em; font-size:clamp(.95rem, 3vw, 1.1rem); }
+.badge { display:inline-block; padding:.25em .8em; border-radius:99px; color:#fff; font-weight:bold; margin-bottom:.6em; }
+.badge.pass { background:var(--ok); } .badge.warn { background:var(--warn); }
+table { width:100%; border-collapse:collapse; font-size:.82rem; }
+th, td { border-bottom:1px solid var(--line); padding:.35em .5em; text-align:right; }
+th { color:var(--acc); }
+.note { color:var(--mut); font-size:.78rem; line-height:1.7; margin:.6em 0 0; }
+.sens { margin-top:16px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+footer { color:var(--mut); font-size:.75rem; margin-top:18px; line-height:1.8; }
+@media (max-width:640px) { th, td { padding:.3em .35em; } }
+</style></head><body><main>
+<h1>داشبورد اعتبارسنجی LCIS</h1>
+<div class="sub">سامانهٔ هوشمند کپسول‌های گاز مایع — پتروپالاتوس | نسخهٔ lcis-trl5-0.4.0 | همهٔ عددها از نتایج قابل بازتولید (run_validation.py) خوانده شده‌اند</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>موتور قواعد (FR-03/04/05)</h3>
+    <div class="badge pass">PASS</div>
+    <table><tr><th>موتور</th><th>آزمون</th><th>پاس</th></tr>
+    <tr><td>پرکنندگی</td><td>۲۹</td><td>۲۹</td></tr><tr><td>پذیرش لات</td><td>۶</td><td>۶</td></tr><tr><td>چرخهٔ عمر</td><td>۱۵</td><td>۱۵</td></tr>
+    </table>
+    <p class="note">بازپخش آمار NIST: لات‌های پذیرفته ۷۴.۷۷٪
+    در برابر منتشرشده ۷۴.۲۰٪</p>
+  </div>
+  <div class="card">
+    <h3>پیش‌بینی تقاضا (FR-07)</h3>
+    <div class="badge pass">مهارت +۰.۴۶</div>
+    <p class="note">CI ۹۵٪: ۰.۳۳ تا ۰.۵۵
+    | پوشش ۸۰٪: ۰.۸۱ | سیاست = بهترین: True</p>
+    <table><tr><th>روش</th><th>RMSE</th><th>MAPE</th><th>مهارت</th></tr>
+    <tr><td>ridge</td><td>۲۶۲.۴</td><td>۲۵.۴۹٪</td><td>+۰.۴۶</td></tr><tr><td>gbm</td><td>۲۶۳.۸</td><td>۲۴.۷۹٪</td><td>+۰.۴۵</td></tr><tr><td>ensemble_seasonal_ridge</td><td>۳۰۲.۷</td><td>۲۸.۳۶٪</td><td>+۰.۲۸</td></tr><tr><td>moving_average_14d</td><td>۳۵۵.۵</td><td>۳۲.۴۶٪</td><td>+۰.۰۰</td></tr>
+    </table>
+    <p class="note">۱۰ سری منطقه‌ای: بهترین ridge با ۰.۰۸٪ فاصله از بهترین هر سری، برد در ۸ سری از ۱۰</p>
+  </div>
+  <div class="card">
+    <h3>بینایی ماشین (FR-02)</h3>
+    <div class="badge warn">TRL 4</div>
+    <table><tr><th>سنجه</th><th>مقدار</th></tr>
+    <tr><td>دقت آزمون</td><td>۷۸.۲۶٪</td></tr>
+    <tr><td>خلوص حکم pass</td><td>۹۱.۶۷٪</td></tr>
+    <tr><td>آستانهٔ pass</td><td>۰.۹۵</td></tr>
+    <tr><td>حکم‌ها (آزمون)</td><td>pass ۱۲ / review ۱۱ / reject ۰</td></tr>
+    <tr><td>تصاویر تأییدشده</td><td>۷۵</td></tr>
+    </table>
+    <p class="note">کلاس‌ها: ok ۴۸، rust ۲۵، crack ۲ — برچسب‌ها مدل‌ساخته؛ تأیید انسانی گام بعدی است</p>
+  </div>
+  <div class="card">
+    <h3>پلتفرم و NFR ها</h3>
+    <div class="badge pass">۸۷ آزمون پاس</div>
+    <table><tr><th>سنجه</th><th>مقدار</th></tr>
+    <tr><td>پوشش کد (NFR-06 ≥ ۸۵٪)</td><td>۹۵٪</td></tr>
+    <tr><td>NFR-01 (پاسخ با ۱۰۰۰ رکورد)</td><td>&lt; ۵۰۰ms ✓</td></tr>
+    <tr><td>نقش‌ها / حسابرسی</td><td>۶ نقش / هر درخواست ثبت می‌شود</td></tr>
+    <tr><td>Docker / CI</td><td>آماده / pytest در هر push</td></tr>
+    </table>
+    <p class="note">انتخاب خودکار (تلورانس ۵٪): ۸ از ۱۱ برابر بهترین؛ میانگین نقص ۳.۱۹٪</p>
+  </div>
+</div>
+<div class="sens"><h3>حساسیت به طول تاریخچه (سری هفتگی ملی، ۵۲ مبدأ)</h3>
+<table><tr><th>تاریخچه (هفته)</th><th>ridge</th><th>ترکیب فصلی+ریج</th><th>MVP میانگین ۱۴</th></tr><tr><td>۱۲۰</td><td>۲۸۱.۸</td><td>۱۸۰.۴</td><td>۲۸۱.۸</td></tr><tr><td>۲۰۰</td><td>۱۷۲.۷</td><td>۱۳۹.۲</td><td>۲۸۵.۳</td></tr><tr><td>۳۰۰</td><td>۱۵۴.۹</td><td>۱۵۳.۵</td><td>۲۸۳.۱</td></tr><tr><td>۵۰۰</td><td>۱۵۸.۸</td><td>۱۵۸.۳</td><td>۲۵۳.۰</td></tr><tr><td>۸۰۰</td><td>۲۳۵.۲</td><td>۲۶۷.۹</td><td>۳۹۵.۳</td></tr><tr><td>۱۱۸۰</td><td>۲۳۱.۵</td><td>۲۹۶.۶</td><td>۳۱۵.۶</td></tr></table>
+<p class="note">قاعدهٔ انتخاب بر حسب فصل کامل: کمتر از ۱۱ فصل ← ترکیب؛ از ۱۱ فصل ← ridge به‌تنهایی.</p></div>
+<footer>شواهد کامل: validation/results/*.json و نمودارهای validation/figures/ — گزارش ارزیابی TRL در LCIS_TRL_Report.pdf |
+منابع دادهٔ واقعی با هش SHA-256 در data/sources.json | تصاویر وب بازنشر نمی‌شوند؛ فقط برچسب و مانیفست.</footer>
+</main></body></html>
