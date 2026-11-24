@@ -1,0 +1,6 @@
+metric,group,count
+cylinders_over_safe_fill,>20 to 21 lb,91
+cylinders_over_safe_fill,>21 to 22 lb,10
+cylinders_over_safe_fill,>22 to 23 lb,7
+cylinders_over_safe_fill,>23 to 24 lb,5
+cylinders_over_safe_fill,>24 lb,5

@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+# local databases and artefacts
+*.db
+*.sqlite
+*.sqlite3
+# images collected from the web are NOT redistributed (licensing unclear);
+# only their labels and the download manifest are committed (data/images/)

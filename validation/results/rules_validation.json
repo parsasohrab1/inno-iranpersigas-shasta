@@ -1,0 +1,583 @@
+{
+ "module": "FR-03 / FR-04 / FR-05 rule engines",
+ "reference_statistics": "NIST SP 2200-01 (2022)",
+ "filling_boundary": [
+  {
+   "case": "exact fill",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "case": "inside MAV",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": "below label by 0.200 lb, within the MAV 0.280 lb"
+  },
+  {
+   "case": "shortage equal to MAV is not an error",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": "below label by 0.280 lb, within the MAV 0.280 lb"
+  },
+  {
+   "case": "shortage just over MAV",
+   "expected_anomaly": "short_fill",
+   "expected_action": "rework",
+   "got_anomaly": "short_fill",
+   "got_action": "rework",
+   "pass": true,
+   "detail": "shortage 0.290 lb exceeds the MAV 0.280 lb (NIST HB 133 unreasonable minus error)"
+  },
+  {
+   "case": "over safe fill by 2.5 %",
+   "expected_anomaly": "overfill",
+   "expected_action": "reject",
+   "got_anomaly": "overfill",
+   "got_action": "reject",
+   "pass": true,
+   "detail": "0.500 lb above the safe fill level (20 lb)"
+  },
+  {
+   "case": "over safe fill by 7.5 %",
+   "expected_anomaly": "overfill",
+   "expected_action": "reject",
+   "got_anomaly": "overfill",
+   "got_action": "reject",
+   "pass": true,
+   "detail": "1.500 lb above the safe fill level (20 lb)"
+  },
+  {
+   "case": "at safe fill is fine",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "case": "partial fill of a larger cylinder",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "case": "no capacity: +19 % passes the heuristic",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "case": "no capacity: +21 % flagged",
+   "expected_anomaly": "overfill",
+   "expected_action": "review",
+   "got_anomaly": "overfill",
+   "got_action": "review",
+   "pass": true,
+   "detail": "no rated capacity given; first-SRS heuristic (+20 % of the target) applied"
+  },
+  {
+   "case": "leak outranks everything",
+   "expected_anomaly": "leak",
+   "expected_action": "reject",
+   "got_anomaly": "leak",
+   "got_action": "reject",
+   "pass": true,
+   "detail": "leak signal during or after filling"
+  },
+  {
+   "case": "tare loss 5.6 %",
+   "expected_anomaly": "tare_loss",
+   "expected_action": "reject",
+   "got_anomaly": "tare_loss",
+   "got_action": "reject",
+   "pass": true,
+   "detail": "49 CFR 180.209(c): a 4-series cylinder with 5 % or more tare loss must be requalified before refilling"
+  },
+  {
+   "case": "tare loss exactly 5 %",
+   "expected_anomaly": "tare_loss",
+   "expected_action": "reject",
+   "got_anomaly": "tare_loss",
+   "got_action": "reject",
+   "pass": true,
+   "detail": "49 CFR 180.209(c): a 4-series cylinder with 5 % or more tare loss must be requalified before refilling"
+  },
+  {
+   "case": "tare loss 4.4 % is non-compliant but not a reject",
+   "expected_anomaly": "tare_out_of_tolerance",
+   "expected_action": "review",
+   "got_anomaly": "tare_out_of_tolerance",
+   "got_action": "review",
+   "pass": true,
+   "detail": "49 CFR 178.35 tare tolerance -3 % ... 1 %"
+  },
+  {
+   "case": "tare 2.2 % light: inside DOT",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "case": "tare 0.28 % light: inside HB 130",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "case": "tare 2.8 % heavy is outside +1 %",
+   "expected_anomaly": "tare_out_of_tolerance",
+   "expected_action": "review",
+   "got_anomaly": "tare_out_of_tolerance",
+   "got_action": "review",
+   "pass": true,
+   "detail": "49 CFR 178.35 tare tolerance -3 % ... 1 %"
+  },
+  {
+   "case": "short fill outranks a tare review",
+   "expected_anomaly": "short_fill",
+   "expected_action": "rework",
+   "got_anomaly": "short_fill",
+   "got_action": "rework",
+   "pass": true,
+   "detail": "shortage 1.000 lb exceeds the MAV 0.280 lb (NIST HB 133 unreasonable minus error)"
+  },
+  {
+   "case": "40 lb cylinder: -2.33 % is outside -2 %",
+   "expected_anomaly": "tare_out_of_tolerance",
+   "expected_action": "review",
+   "got_anomaly": "tare_out_of_tolerance",
+   "got_action": "review",
+   "pass": true,
+   "detail": "49 CFR 178.35 tare tolerance -2 % ... 1 %"
+  },
+  {
+   "case": "20 lb cylinder: -2.33 % is inside -3 %",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "case": "kg: MAV scales with the label",
+   "expected_anomaly": "short_fill",
+   "expected_action": "rework",
+   "got_anomaly": "short_fill",
+   "got_action": "rework",
+   "pass": true,
+   "detail": "shortage 0.500 kg exceeds the MAV 0.187 kg (NIST HB 133 unreasonable minus error)"
+  },
+  {
+   "case": "kg: 10 kg cylinder (22 lb) uses the -3 % band",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "case": "kg: just beyond -3 %",
+   "expected_anomaly": "tare_out_of_tolerance",
+   "expected_action": "review",
+   "got_anomaly": "tare_out_of_tolerance",
+   "got_action": "review",
+   "pass": true,
+   "detail": "49 CFR 178.35 tare tolerance -3 % ... 1 %"
+  },
+  {
+   "case": "kg: 17 kg cylinder (37 lb) uses the -2 % band",
+   "expected_anomaly": "tare_out_of_tolerance",
+   "expected_action": "review",
+   "got_anomaly": "tare_out_of_tolerance",
+   "got_action": "review",
+   "pass": true,
+   "detail": "49 CFR 178.35 tare tolerance -2 % ... 1 %"
+  },
+  {
+   "case": "scale tolerance widens the band",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": "below label by 0.320 lb, within the MAV 0.280 lb"
+  },
+  {
+   "case": "scale tolerance is not unlimited",
+   "expected_anomaly": "short_fill",
+   "expected_action": "rework",
+   "got_anomaly": "short_fill",
+   "got_action": "rework",
+   "pass": true,
+   "detail": "shortage 0.340 lb exceeds the MAV 0.280 lb (NIST HB 133 unreasonable minus error)"
+  },
+  {
+   "case": "explicit MAV of 0.5",
+   "expected_anomaly": "ok",
+   "expected_action": "accept",
+   "got_anomaly": "ok",
+   "got_action": "accept",
+   "pass": true,
+   "detail": "below label by 0.400 lb, within the MAV 0.500 lb"
+  },
+  {
+   "case": "overfill severity band 5-10 %",
+   "expected_anomaly": "5_to_10_pct",
+   "expected_action": "",
+   "got_anomaly": "5_to_10_pct",
+   "got_action": "",
+   "pass": true
+  },
+  {
+   "case": "tare tier of a 5.6 % loss",
+   "expected_anomaly": "requalify",
+   "expected_action": "",
+   "got_anomaly": "requalify",
+   "got_action": "",
+   "pass": true
+  }
+ ],
+ "lot_acceptance": [
+  {
+   "case": "accurate lot passes",
+   "expected": "pass",
+   "got": "pass",
+   "pass": true,
+   "average_error": 0.0242,
+   "sel": 0.0344
+  },
+  {
+   "case": "one cylinder 0.29 lb short fails the MAV only",
+   "expected": "mav_only",
+   "got": "mav_only",
+   "pass": true,
+   "average_error": -0.0042,
+   "sel": 0.0665
+  },
+  {
+   "case": "average -0.10 with SEL 0.05 fails the average only",
+   "expected": "average_only",
+   "got": "average_only",
+   "pass": true,
+   "average_error": -0.1,
+   "sel": 0.0
+  },
+  {
+   "case": "both requirements fail",
+   "expected": "both",
+   "got": "both",
+   "pass": true,
+   "average_error": -0.125,
+   "sel": 0.055
+  },
+  {
+   "case": "n = 10 without a sample correction factor is refused",
+   "expected": "ValueError",
+   "got": "ValueError",
+   "pass": true
+  },
+  {
+   "case": "n = 10 with an explicit factor works",
+   "expected": "pass",
+   "got": "pass",
+   "pass": true
+  }
+ ],
+ "lifecycle_boundary": [
+  {
+   "case": "valid test, in service",
+   "expected_status": "in_service",
+   "expected_next_test": "2029-06-01",
+   "got_status": "in_service",
+   "got_next_test": "2029-06-01",
+   "days_to_test": 920,
+   "pass": true
+  },
+  {
+   "case": "inside the 90-day window",
+   "expected_status": "due_for_test",
+   "expected_next_test": "2026-12-01",
+   "got_status": "due_for_test",
+   "got_next_test": "2026-12-01",
+   "days_to_test": 7,
+   "pass": true
+  },
+  {
+   "case": "overdue by 176 days",
+   "expected_status": "overdue_for_test",
+   "expected_next_test": "2026-06-01",
+   "got_status": "overdue_for_test",
+   "got_next_test": "2026-06-01",
+   "days_to_test": -176,
+   "pass": true
+  },
+  {
+   "case": "10-year interval when the service qualifies",
+   "expected_status": "in_service",
+   "expected_next_test": "2034-06-01",
+   "got_status": "in_service",
+   "got_next_test": "2034-06-01",
+   "days_to_test": 2746,
+   "pass": true
+  },
+  {
+   "case": "12-year interval for coated cylinders",
+   "expected_status": "in_service",
+   "expected_next_test": "2036-06-01",
+   "got_status": "in_service",
+   "got_next_test": "2036-06-01",
+   "days_to_test": 3477,
+   "pass": true
+  },
+  {
+   "case": "29 February rounds to 28",
+   "expected_status": "in_service",
+   "expected_next_test": "2029-02-28",
+   "got_status": "in_service",
+   "got_next_test": "2029-02-28",
+   "days_to_test": 827,
+   "pass": true
+  },
+  {
+   "case": "critical finding suspends the cylinder",
+   "expected_status": "suspend",
+   "expected_next_test": "2029-06-01",
+   "got_status": "suspend",
+   "got_next_test": "2029-06-01",
+   "days_to_test": 920,
+   "pass": true
+  },
+  {
+   "case": "requalification after the finding clears it",
+   "expected_status": "in_service",
+   "expected_next_test": "2029-06-01",
+   "got_status": "in_service",
+   "got_next_test": "2029-06-01",
+   "days_to_test": 920,
+   "pass": true
+  },
+  {
+   "case": "requalification before the finding does not clear it",
+   "expected_status": "suspend",
+   "expected_next_test": "2030-08-20",
+   "got_status": "suspend",
+   "got_next_test": "2030-08-20",
+   "days_to_test": 1365,
+   "pass": true
+  },
+  {
+   "case": "tare loss of 5.0 % suspends",
+   "expected_status": "suspend",
+   "expected_next_test": "2029-06-01",
+   "got_status": "suspend",
+   "got_next_test": "2029-06-01",
+   "days_to_test": 920,
+   "pass": true
+  },
+  {
+   "case": "tare loss of 4.9 % does not suspend",
+   "expected_status": "in_service",
+   "expected_next_test": "2029-06-01",
+   "got_status": "in_service",
+   "got_next_test": "2029-06-01",
+   "days_to_test": 920,
+   "pass": true
+  },
+  {
+   "case": "minor findings keep the cylinder in service",
+   "expected_status": "in_service",
+   "expected_next_test": "2029-06-01",
+   "got_status": "in_service",
+   "got_next_test": "2029-06-01",
+   "days_to_test": 920,
+   "pass": true
+  },
+  {
+   "case": "operator design life reached",
+   "expected_status": "retire",
+   "expected_next_test": "2029-06-01",
+   "got_status": "retire",
+   "got_next_test": "2029-06-01",
+   "days_to_test": 920,
+   "pass": true
+  },
+  {
+   "case": "operator retirement rule on repeated critical findings",
+   "expected_status": "retire",
+   "expected_next_test": "2029-06-01",
+   "got_status": "retire",
+   "got_next_test": "2029-06-01",
+   "days_to_test": 920,
+   "pass": true
+  },
+  {
+   "case": "suspension outranks an overdue test",
+   "expected_status": "suspend",
+   "expected_next_test": "2025-01-01",
+   "got_status": "suspend",
+   "got_next_test": "2025-01-01",
+   "days_to_test": -692,
+   "pass": true
+  }
+ ],
+ "tare_replay": {
+  "new": {
+   "n": 9482,
+   "published_pct": {
+    "hb130": 44.3,
+    "dot": 54.099999999999994,
+    "outside_dot": 1.6
+   },
+   "replayed_pct": {
+    "hb130": 44.3,
+    "dot": 54.1,
+    "outside_dot": 1.59
+   },
+   "within_0_6_pp": {
+    "hb130": true,
+    "dot": true,
+    "outside_dot": true
+   },
+   "pass": true,
+   "requalify_share_pct_not_published": 0.51
+  },
+  "used": {
+   "n": 822,
+   "published_pct": {
+    "hb130": 32.0,
+    "dot": 33.7,
+    "outside_dot": 34.3
+   },
+   "replayed_pct": {
+    "hb130": 32.0,
+    "dot": 33.7,
+    "outside_dot": 34.31
+   },
+   "within_0_6_pp": {
+    "hb130": true,
+    "dot": true,
+    "outside_dot": true
+   },
+   "pass": true,
+   "requalify_share_pct_not_published": 10.34
+  }
+ },
+ "return_product_replay": {
+  "n": 6896,
+  "published_pct": {
+   "0 lb or negative": 15.9,
+   "up to 1 lb": 58.8,
+   "1 lb to 3 lbs": 10.6,
+   "3 lbs to 5 lbs": 5.6,
+   "over 5 lbs": 9.1
+  },
+  "replayed_pct": {
+   "0 lb or negative": 16.55,
+   "up to 1 lb": 58.27,
+   "1 lb to 3 lbs": 10.95,
+   "3 lbs to 5 lbs": 5.58,
+   "over 5 lbs": 8.66
+  },
+  "within_1_pp": {
+   "0 lb or negative": true,
+   "up to 1 lb": true,
+   "1 lb to 3 lbs": true,
+   "3 lbs to 5 lbs": true,
+   "over 5 lbs": true
+  },
+  "pass": true,
+  "published_more_than_1lb_pct": 25.4,
+  "replayed_more_than_1lb_pct": 25.19
+ },
+ "fill_replay": {
+  "population_generator": "constructive: 959 lots drawn with the published verdict shares; cylinder errors resampled until the NIST rule yields that verdict; overfills added with the published rate and severity bins (individual NIST records are not published)",
+  "lots_simulated": 959,
+  "sample_per_lot": 12,
+  "lots_verdict_pct": {
+   "pass": 74.77,
+   "mav_only": 18.04,
+   "average_only": 1.01,
+   "both": 6.19
+  },
+  "published_lots_pct": {
+   "pass": 74.2,
+   "mav_only": 17.1,
+   "average_only": 1.2,
+   "both": 7.5
+  },
+  "within_3_pp": {
+   "pass": true,
+   "mav_only": true,
+   "average_only": true,
+   "both": true
+  },
+  "engine_equals_independent_formula": true,
+  "overfill_pct": 1.06,
+  "published_overfill_pct": 1.13,
+  "overfill_bins_pct": {
+   "(0,1]": 0.805,
+   "(1,2]": 0.11,
+   "(2,3]": 0.055,
+   "(3,4]": 0.041,
+   ">4": 0.052
+  },
+  "published_overfill_bins_pct": {
+   "(0,1]": 0.87,
+   "(1,2]": 0.096,
+   "(2,3]": 0.067,
+   "(3,4]": 0.048,
+   ">4": 0.048
+  },
+  "overfill_bins_within_0_1_pp": {
+   "(0,1]": true,
+   "(1,2]": true,
+   "(2,3]": true,
+   "(3,4]": true,
+   ">4": true
+  },
+  "short_fill_pct": 4.48,
+  "seeds": [
+   11,
+   12,
+   13
+  ]
+ },
+ "filling_boundary_summary": {
+  "cases": 29,
+  "passed": 29
+ },
+ "lot_acceptance_summary": {
+  "cases": 6,
+  "passed": 6
+ },
+ "lifecycle_boundary_summary": {
+  "cases": 15,
+  "passed": 15
+ },
+ "pass": true
+}

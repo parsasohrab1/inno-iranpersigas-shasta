@@ -1,0 +1,83 @@
+[
+ {
+  "dataset": "eia_weekly_us_propane_propylene_product_supplied.csv",
+  "publisher": "U.S. Energy Information Administration",
+  "url": "https://www.eia.gov/dnav/pet/hist_xls/WPRUP_NUS_2w.xls",
+  "series": "WPRUP_NUS_2",
+  "name": "Weekly U.S. Product Supplied of Propane and Propylene",
+  "unit": "thousand barrels per day",
+  "frequency": "weekly",
+  "retrieved": "2026-11-24",
+  "raw_sha256": "20ac928a0ca2f7e2aa03727bd733dc6ab9b2a528b86387193be21b66a8feb063",
+  "rows": 1180,
+  "start": "2004-04-09",
+  "end": "2026-11-13",
+  "licence": "U.S. Government public information"
+ },
+ {
+  "dataset": "PET_CONS_PSUP_DC_R10_MBBLPD_M.xls",
+  "publisher": "U.S. Energy Information Administration",
+  "url": "https://www.eia.gov/dnav/pet/xls/PET_CONS_PSUP_DC_R10_MBBLPD_M.xls",
+  "region": "East Coast (PADD 1)",
+  "unit": "thousand barrels per day",
+  "frequency": "monthly",
+  "retrieved": "2026-11-24",
+  "raw_sha256": "a76e6963b484169e773d73c82307e7b7fbf17421f0d691c249436afcce3db3aa",
+  "licence": "U.S. Government public information"
+ },
+ {
+  "dataset": "PET_CONS_PSUP_DC_R20_MBBLPD_M.xls",
+  "publisher": "U.S. Energy Information Administration",
+  "url": "https://www.eia.gov/dnav/pet/xls/PET_CONS_PSUP_DC_R20_MBBLPD_M.xls",
+  "region": "Midwest (PADD 2)",
+  "unit": "thousand barrels per day",
+  "frequency": "monthly",
+  "retrieved": "2026-11-24",
+  "raw_sha256": "313473a8cac0feb9c58809acccf596d06852c37f0da0cac98d171f9dc68a45a4",
+  "licence": "U.S. Government public information"
+ },
+ {
+  "dataset": "PET_CONS_PSUP_DC_R30_MBBLPD_M.xls",
+  "publisher": "U.S. Energy Information Administration",
+  "url": "https://www.eia.gov/dnav/pet/xls/PET_CONS_PSUP_DC_R30_MBBLPD_M.xls",
+  "region": "Gulf Coast (PADD 3)",
+  "unit": "thousand barrels per day",
+  "frequency": "monthly",
+  "retrieved": "2026-11-24",
+  "raw_sha256": "90e423397e8e4efccfd8f7756cd66fa8c3273232504e0a30a0efc84c4c960990",
+  "licence": "U.S. Government public information"
+ },
+ {
+  "dataset": "PET_CONS_PSUP_DC_R40_MBBLPD_M.xls",
+  "publisher": "U.S. Energy Information Administration",
+  "url": "https://www.eia.gov/dnav/pet/xls/PET_CONS_PSUP_DC_R40_MBBLPD_M.xls",
+  "region": "Rocky Mountain (PADD 4)",
+  "unit": "thousand barrels per day",
+  "frequency": "monthly",
+  "retrieved": "2026-11-24",
+  "raw_sha256": "3484a40867a79889da32e56ddda8c7d0ed52b5b942498025c7d104c9395c70fa",
+  "licence": "U.S. Government public information"
+ },
+ {
+  "dataset": "PET_CONS_PSUP_DC_R50_MBBLPD_M.xls",
+  "publisher": "U.S. Energy Information Administration",
+  "url": "https://www.eia.gov/dnav/pet/xls/PET_CONS_PSUP_DC_R50_MBBLPD_M.xls",
+  "region": "West Coast (PADD 5)",
+  "unit": "thousand barrels per day",
+  "frequency": "monthly",
+  "retrieved": "2026-11-24",
+  "raw_sha256": "bf4d6db107615101fdcbc04e5abebdcef2be4ebe73b752dc4c655f232aec88ba",
+  "licence": "U.S. Government public information"
+ },
+ {
+  "dataset": "NIST SP 2200-01",
+  "publisher": "National Institute of Standards and Technology",
+  "title": "2022 NCWM-NIST National Survey on 20 lb LPG (Propane) Cylinders",
+  "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.2200-01.pdf",
+  "doi": "10.6028/NIST.SP.2200-01",
+  "retrieved": "2026-11-24",
+  "raw_sha256": "1eea01a44c9418367442fe3a6eb985f0a886415050475f2278746696e1161e34",
+  "licence": "U.S. Government public information (NIST)",
+  "note": "Table 2 prints n = 1,535 for used cylinders while the abstract and Phase I text state 822; this package uses 822 (Phase I text) and transcribes Table 2 percentages as printed. Table D1 (new cylinders) lists 45 manufacturer codes whose counts sum to 9,492, i.e. 10 more than the 9,482 total stated in the Phase I text; the table is transcribed as printed. Table D2 (used cylinders) sums exactly to 822."
+ }
+]
