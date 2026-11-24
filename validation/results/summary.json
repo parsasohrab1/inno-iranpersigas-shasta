@@ -1,0 +1,48 @@
+{
+ "started_at": "2026-11-24T15:44:28Z",
+ "product": "/home/z/my-project/build/lcis",
+ "suites": {
+  "rules": {
+   "ok": true,
+   "seconds": 1.8,
+   "results_file": "validation/results/rules_validation.json",
+   "stderr_tail": ""
+  },
+  "forecast_backtest": {
+   "ok": true,
+   "seconds": 612.1,
+   "results_file": "validation/results/forecast_backtest.json",
+   "stderr_tail": ""
+  },
+  "forecast_ensemble": {
+   "ok": true,
+   "seconds": 515.4,
+   "results_file": "validation/results/forecast_ensemble.json",
+   "stderr_tail": ""
+  },
+  "forecast_auto_select": {
+   "ok": true,
+   "seconds": 76.6,
+   "results_file": "validation/results/forecast_auto_select.json",
+   "stderr_tail": ""
+  },
+  "vision": {
+   "ok": true,
+   "seconds": 2.7,
+   "results_file": "validation/results/vision.json",
+   "stderr_tail": ""
+  }
+ },
+ "headline": {
+  "rules_pass": true,
+  "forecast_selected": "ridge",
+  "forecast_policy_equals_best": true,
+  "vision_test_accuracy": 0.782608695652174,
+  "vision_thresholds": {
+   "pass_p_min": 0.95,
+   "critical_p_min": 0.6,
+   "minor_p_min": 0.6
+  }
+ },
+ "finished_at": "2026-11-24T16:04:37Z"
+}
