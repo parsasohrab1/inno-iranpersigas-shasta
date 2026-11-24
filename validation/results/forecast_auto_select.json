@@ -1,0 +1,378 @@
+{
+ "inner_window_share": 0.7,
+ "rows": [
+  {
+   "series": "US weekly national",
+   "outer_rmse": {
+    "naive": 358.0561659135588,
+    "moving_average_14d": 305.96399373636814,
+    "seasonal_naive": 327.09312168923736,
+    "seasonal_drift": 363.6515517934646,
+    "ridge": 236.28362244690737,
+    "gbm": 227.14367122992152,
+    "ensemble_seasonal_ridge": 282.82581387844056
+   },
+   "inner_rmse": {
+    "naive": 411.3825857618816,
+    "moving_average_14d": 374.7809653731832,
+    "seasonal_naive": 376.18345857506085,
+    "seasonal_drift": 378.3664702150113,
+    "ridge": 272.88005958909594,
+    "gbm": 278.02779339928276,
+    "ensemble_seasonal_ridge": 310.8668068815528
+   },
+   "best_outer": "gbm",
+   "chosen_by_tolerance": {
+    "0.0": "ridge",
+    "0.05": "ridge",
+    "0.1": "ridge",
+    "0.2": "ridge"
+   },
+   "chosen": "ridge"
+  },
+  {
+   "series": "propane | East Coast (PADD 1)",
+   "outer_rmse": {
+    "naive": 68.66868929059946,
+    "moving_average_14d": 98.09746298910058,
+    "seasonal_naive": 58.44893307647093,
+    "seasonal_drift": 43.24297470238502,
+    "ridge": 36.67632509204392,
+    "gbm": 67.84853791023718,
+    "ensemble_seasonal_ridge": 39.081094415929975
+   },
+   "inner_rmse": {
+    "naive": 62.99206299209449,
+    "moving_average_14d": 92.05668464354308,
+    "seasonal_naive": 37.559159684296404,
+    "seasonal_drift": 42.54603599128159,
+    "ridge": 33.781536983001224,
+    "gbm": 41.35456417012786,
+    "ensemble_seasonal_ridge": 35.84679860195105
+   },
+   "best_outer": "ridge",
+   "chosen_by_tolerance": {
+    "0.0": "ridge",
+    "0.05": "ridge",
+    "0.1": "ridge",
+    "0.2": "seasonal_naive"
+   },
+   "chosen": "ridge"
+  },
+  {
+   "series": "propane | Gulf Coast (PADD 3)",
+   "outer_rmse": {
+    "naive": 92.50585567051058,
+    "moving_average_14d": 68.46688873176369,
+    "seasonal_naive": 79.02566390455416,
+    "seasonal_drift": 73.20196566881096,
+    "ridge": 71.66432243608295,
+    "gbm": 80.38964082235037,
+    "ensemble_seasonal_ridge": 68.73019519609652
+   },
+   "inner_rmse": {
+    "naive": 78.73070436318864,
+    "moving_average_14d": 59.44735157540196,
+    "seasonal_naive": 82.41518006266749,
+    "seasonal_drift": 88.43730964980357,
+    "ridge": 58.26641044785084,
+    "gbm": 61.882938324044574,
+    "ensemble_seasonal_ridge": 69.38299120994981
+   },
+   "best_outer": "moving_average_14d",
+   "chosen_by_tolerance": {
+    "0.0": "ridge",
+    "0.05": "moving_average_14d",
+    "0.1": "moving_average_14d",
+    "0.2": "moving_average_14d"
+   },
+   "chosen": "ridge"
+  },
+  {
+   "series": "propane | Midwest (PADD 2)",
+   "outer_rmse": {
+    "naive": 112.80194048764311,
+    "moving_average_14d": 131.1179872759706,
+    "seasonal_naive": 46.441719749954714,
+    "seasonal_drift": 64.281877090065,
+    "ridge": 55.18780926077535,
+    "gbm": 58.71034783991855,
+    "ensemble_seasonal_ridge": 46.39676776629771
+   },
+   "inner_rmse": {
+    "naive": 87.41880586605848,
+    "moving_average_14d": 119.2157810603893,
+    "seasonal_naive": 68.28285010928893,
+    "seasonal_drift": 68.73813750472912,
+    "ridge": 53.34534124648542,
+    "gbm": 54.730574976472255,
+    "ensemble_seasonal_ridge": 60.06367666665888
+   },
+   "best_outer": "ensemble_seasonal_ridge",
+   "chosen_by_tolerance": {
+    "0.0": "ridge",
+    "0.05": "ridge",
+    "0.1": "ridge",
+    "0.2": "ridge"
+   },
+   "chosen": "ridge"
+  },
+  {
+   "series": "propane | Rocky Mountain (PADD 4)",
+   "outer_rmse": {
+    "naive": 6.8068592855540455,
+    "moving_average_14d": 8.079431346595733,
+    "seasonal_naive": 5.939509893735154,
+    "seasonal_drift": 6.441240822491683,
+    "ridge": 6.3003981746158795,
+    "gbm": 8.46120155887879,
+    "ensemble_seasonal_ridge": 5.619663052954988
+   },
+   "inner_rmse": {
+    "naive": 11.636355181273984,
+    "moving_average_14d": 12.116362652468844,
+    "seasonal_naive": 12.217278942624858,
+    "seasonal_drift": 11.939829304036293,
+    "ridge": 8.695842144737016,
+    "gbm": 10.000633817623937,
+    "ensemble_seasonal_ridge": 9.595978252033973
+   },
+   "best_outer": "ensemble_seasonal_ridge",
+   "chosen_by_tolerance": {
+    "0.0": "ridge",
+    "0.05": "ridge",
+    "0.1": "ridge",
+    "0.2": "ridge"
+   },
+   "chosen": "ridge"
+  },
+  {
+   "series": "propane | West Coast (PADD 5)",
+   "outer_rmse": {
+    "naive": 14.402931800312201,
+    "moving_average_14d": 13.0576733941051,
+    "seasonal_naive": 12.899181713926232,
+    "seasonal_drift": 15.505039503335682,
+    "ridge": 8.31698274702796,
+    "gbm": 8.56768762301676,
+    "ensemble_seasonal_ridge": 11.348491148879452
+   },
+   "inner_rmse": {
+    "naive": 13.33720181975786,
+    "moving_average_14d": 14.382077207440428,
+    "seasonal_naive": 10.110108096073242,
+    "seasonal_drift": 11.243185766964636,
+    "ridge": 9.637944494167419,
+    "gbm": 10.609967037250868,
+    "ensemble_seasonal_ridge": 9.471390023465746
+   },
+   "best_outer": "ridge",
+   "chosen_by_tolerance": {
+    "0.0": "ensemble_seasonal_ridge",
+    "0.05": "ridge",
+    "0.1": "seasonal_naive",
+    "0.2": "seasonal_naive"
+   },
+   "chosen": "ensemble_seasonal_ridge"
+  },
+  {
+   "series": "propane_and_propylene | East Coast (PADD 1)",
+   "outer_rmse": {
+    "naive": 51.259145525457214,
+    "moving_average_14d": 70.73134514443397,
+    "seasonal_naive": 43.856457778631516,
+    "seasonal_drift": 44.95120811625769,
+    "ridge": 26.515478713401595,
+    "gbm": 30.946526564680017,
+    "ensemble_seasonal_ridge": 34.96607353264882
+   },
+   "inner_rmse": {
+    "naive": 58.970937151883795,
+    "moving_average_14d": 83.41441512200258,
+    "seasonal_naive": 44.320800233449454,
+    "seasonal_drift": 43.131495370055774,
+    "ridge": 34.702980676136505,
+    "gbm": 37.112242115505026,
+    "ensemble_seasonal_ridge": 36.31005339221812
+   },
+   "best_outer": "ridge",
+   "chosen_by_tolerance": {
+    "0.0": "ridge",
+    "0.05": "ridge",
+    "0.1": "ridge",
+    "0.2": "ridge"
+   },
+   "chosen": "ridge"
+  },
+  {
+   "series": "propane_and_propylene | Gulf Coast (PADD 3)",
+   "outer_rmse": {
+    "naive": 101.99074032043846,
+    "moving_average_14d": 72.77605392533529,
+    "seasonal_naive": 104.63454921243216,
+    "seasonal_drift": 123.1876391706751,
+    "ridge": 74.52459907419934,
+    "gbm": 82.81401533391723,
+    "ensemble_seasonal_ridge": 94.13298965602183
+   },
+   "inner_rmse": {
+    "naive": 96.05913357332109,
+    "moving_average_14d": 78.98893327044688,
+    "seasonal_naive": 84.24185703194391,
+    "seasonal_drift": 95.19604614888662,
+    "ridge": 78.6183992912116,
+    "gbm": 85.99866742116636,
+    "ensemble_seasonal_ridge": 76.4174777218849
+   },
+   "best_outer": "moving_average_14d",
+   "chosen_by_tolerance": {
+    "0.0": "ensemble_seasonal_ridge",
+    "0.05": "moving_average_14d",
+    "0.1": "moving_average_14d",
+    "0.2": "moving_average_14d"
+   },
+   "chosen": "ensemble_seasonal_ridge"
+  },
+  {
+   "series": "propane_and_propylene | Midwest (PADD 2)",
+   "outer_rmse": {
+    "naive": 76.0358102767666,
+    "moving_average_14d": 100.74895131204191,
+    "seasonal_naive": 63.49846892292408,
+    "seasonal_drift": 58.56712080074356,
+    "ridge": 47.4244415875425,
+    "gbm": 60.86262947484142,
+    "ensemble_seasonal_ridge": 51.60148139439368
+   },
+   "inner_rmse": {
+    "naive": 83.6176103575363,
+    "moving_average_14d": 122.11843303163947,
+    "seasonal_naive": 54.73703368965894,
+    "seasonal_drift": 52.29180658300386,
+    "ridge": 41.717651383007734,
+    "gbm": 49.9546248594057,
+    "ensemble_seasonal_ridge": 45.12274285371452
+   },
+   "best_outer": "ridge",
+   "chosen_by_tolerance": {
+    "0.0": "ridge",
+    "0.05": "ridge",
+    "0.1": "ridge",
+    "0.2": "ridge"
+   },
+   "chosen": "ridge"
+  },
+  {
+   "series": "propane_and_propylene | Rocky Mountain (PADD 4)",
+   "outer_rmse": {
+    "naive": 18.103099795952687,
+    "moving_average_14d": 19.39274386824178,
+    "seasonal_naive": 23.202011407059807,
+    "seasonal_drift": 23.896187515538497,
+    "ridge": 14.782309794317097,
+    "gbm": 16.96507018484408,
+    "ensemble_seasonal_ridge": 17.931419744245506
+   },
+   "inner_rmse": {
+    "naive": 15.828696062772165,
+    "moving_average_14d": 17.07196580716158,
+    "seasonal_naive": 17.97485015501487,
+    "seasonal_drift": 16.787404930057363,
+    "ridge": 13.226734912407588,
+    "gbm": 13.597274298153247,
+    "ensemble_seasonal_ridge": 14.783068774238995
+   },
+   "best_outer": "ridge",
+   "chosen_by_tolerance": {
+    "0.0": "ridge",
+    "0.05": "ridge",
+    "0.1": "ridge",
+    "0.2": "naive"
+   },
+   "chosen": "ridge"
+  },
+  {
+   "series": "propane_and_propylene | West Coast (PADD 5)",
+   "outer_rmse": {
+    "naive": 14.577379737113251,
+    "moving_average_14d": 15.484658855265284,
+    "seasonal_naive": 17.209493504071137,
+    "seasonal_drift": 16.94199663557988,
+    "ridge": 9.011043002060765,
+    "gbm": 9.048069672601091,
+    "ensemble_seasonal_ridge": 12.254113739882646
+   },
+   "inner_rmse": {
+    "naive": 17.9005187474713,
+    "moving_average_14d": 19.388523525767305,
+    "seasonal_naive": 14.89726724700109,
+    "seasonal_drift": 15.680496681880845,
+    "ridge": 12.874031237723692,
+    "gbm": 13.4111178731065,
+    "ensemble_seasonal_ridge": 13.49968211955498
+   },
+   "best_outer": "ridge",
+   "chosen_by_tolerance": {
+    "0.0": "ridge",
+    "0.05": "ridge",
+    "0.1": "ridge",
+    "0.2": "seasonal_naive"
+   },
+   "chosen": "ridge"
+  }
+ ],
+ "chosen_equals_best": 5,
+ "n_series": 11,
+ "mean_rmse_regret_pct": 9.595509878246137,
+ "rmse_reduction_vs_mvp_pct": [
+  22.774042931829552,
+  40.41748757257353,
+  0.0,
+  57.909810539862235,
+  22.01928694807771,
+  1.2137819303277952,
+  62.51240710994994,
+  0.0,
+  52.928103995188536,
+  6.650137190751327,
+  -11.138990306004404
+ ],
+ "parsimony_policy": {
+  "0.0": {
+   "n_equal_best": 5,
+   "mean_regret_pct": 9.595509878246137,
+   "max_regret_pct": 36.4496175362969,
+   "mean_reduction_vs_mvp_pct": 29.582728116857027,
+   "series_worse_than_mvp": 2,
+   "series_worse_than_best_seasonal": 2,
+   "mean_reduction_vs_best_seasonal_pct": 16.715003383820928
+  },
+  "0.05": {
+   "n_equal_best": 8,
+   "mean_regret_pct": 3.1895313023154492,
+   "max_regret_pct": 18.94753000631091,
+   "mean_reduction_vs_mvp_pct": 34.785677668268136,
+   "series_worse_than_mvp": 0,
+   "series_worse_than_best_seasonal": 2,
+   "mean_reduction_vs_best_seasonal_pct": 21.10413941219721
+  },
+  "0.1": {
+   "n_equal_best": 7,
+   "mean_regret_pct": 8.198121017066926,
+   "max_regret_pct": 55.09448686226626,
+   "mean_reduction_vs_mvp_pct": 31.595495697310305,
+   "series_worse_than_mvp": 0,
+   "series_worse_than_best_seasonal": 2,
+   "mean_reduction_vs_best_seasonal_pct": 17.8747598152297
+  },
+  "0.2": {
+   "n_equal_best": 4,
+   "mean_regret_pct": 23.908219547969146,
+   "max_regret_pct": 90.98225921389391,
+   "mean_reduction_vs_mvp_pct": 23.20782435568693,
+   "series_worse_than_mvp": 1,
+   "series_worse_than_best_seasonal": 4,
+   "mean_reduction_vs_best_seasonal_pct": 7.59719013715834
+  }
+ }
+}

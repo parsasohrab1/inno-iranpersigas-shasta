@@ -1,0 +1,518 @@
+{
+ "combos": {
+  "mean_all_6": [
+   "naive",
+   "moving_average_14d",
+   "seasonal_naive",
+   "seasonal_drift",
+   "ridge",
+   "gbm",
+   "ensemble_seasonal_ridge"
+  ],
+  "median_all_6": [
+   "naive",
+   "moving_average_14d",
+   "seasonal_naive",
+   "seasonal_drift",
+   "ridge",
+   "gbm",
+   "ensemble_seasonal_ridge"
+  ],
+  "mean_seasonal_drift_ridge": [
+   "seasonal_naive",
+   "seasonal_drift",
+   "ridge"
+  ],
+  "mean_ma14_seasonal_ridge": [
+   "moving_average_14d",
+   "seasonal_naive",
+   "ridge"
+  ],
+  "mean_ridge_seasonal_drift": [
+   "ridge",
+   "seasonal_drift"
+  ]
+ },
+ "rows": [
+  {
+   "series": "US weekly national",
+   "period": 52,
+   "n_origins": 260,
+   "rmse": {
+    "naive": 396.139,
+    "moving_average_14d": 355.537,
+    "seasonal_naive": 362.156,
+    "seasonal_drift": 374.013,
+    "ridge": 262.438,
+    "gbm": 263.795,
+    "ensemble_seasonal_ridge": 302.727,
+    "mean_all_6": 279.883,
+    "median_all_6": 276.261,
+    "mean_seasonal_drift_ridge": 302.727,
+    "mean_ma14_seasonal_ridge": 276.651,
+    "mean_ridge_seasonal_drift": 290.54
+   },
+   "wape": {
+    "naive": 30.99,
+    "moving_average_14d": 27.52,
+    "seasonal_naive": 28.19,
+    "seasonal_drift": 29.18,
+    "ridge": 20.68,
+    "gbm": 20.67,
+    "ensemble_seasonal_ridge": 23.99,
+    "mean_all_6": 22.15,
+    "median_all_6": 21.88,
+    "mean_seasonal_drift_ridge": 23.99,
+    "mean_ma14_seasonal_ridge": 21.84,
+    "mean_ridge_seasonal_drift": 22.92
+   },
+   "best": "ridge"
+  },
+  {
+   "series": "propane | East Coast (PADD 1)",
+   "period": 12,
+   "n_origins": 60,
+   "rmse": {
+    "naive": 64.747,
+    "moving_average_14d": 93.91,
+    "seasonal_naive": 44.859,
+    "seasonal_drift": 42.756,
+    "ridge": 34.675,
+    "gbm": 50.776,
+    "ensemble_seasonal_ridge": 36.847,
+    "mean_all_6": 42.314,
+    "median_all_6": 38.486,
+    "mean_seasonal_drift_ridge": 36.847,
+    "mean_ma14_seasonal_ridge": 49.476,
+    "mean_ridge_seasonal_drift": 35.869
+   },
+   "wape": {
+    "naive": 14.89,
+    "moving_average_14d": 22.49,
+    "seasonal_naive": 10.3,
+    "seasonal_drift": 10.26,
+    "ridge": 7.37,
+    "gbm": 11.16,
+    "ensemble_seasonal_ridge": 8.69,
+    "mean_all_6": 9.87,
+    "median_all_6": 8.77,
+    "mean_seasonal_drift_ridge": 8.69,
+    "mean_ma14_seasonal_ridge": 11.26,
+    "mean_ridge_seasonal_drift": 8.37
+   },
+   "best": "ridge"
+  },
+  {
+   "series": "propane | Gulf Coast (PADD 3)",
+   "period": 12,
+   "n_origins": 60,
+   "rmse": {
+    "naive": 83.103,
+    "moving_average_14d": 62.29,
+    "seasonal_naive": 81.413,
+    "seasonal_drift": 84.157,
+    "ridge": 62.588,
+    "gbm": 67.966,
+    "ensemble_seasonal_ridge": 69.188,
+    "mean_all_6": 64.722,
+    "median_all_6": 64.188,
+    "mean_seasonal_drift_ridge": 69.188,
+    "mean_ma14_seasonal_ridge": 63.118,
+    "mean_ridge_seasonal_drift": 67.24
+   },
+   "wape": {
+    "naive": 27.45,
+    "moving_average_14d": 19.51,
+    "seasonal_naive": 26.64,
+    "seasonal_drift": 27.14,
+    "ridge": 20.41,
+    "gbm": 22.45,
+    "ensemble_seasonal_ridge": 22.13,
+    "mean_all_6": 20.69,
+    "median_all_6": 20.23,
+    "mean_seasonal_drift_ridge": 22.13,
+    "mean_ma14_seasonal_ridge": 19.96,
+    "mean_ridge_seasonal_drift": 21.83
+   },
+   "best": "moving_average_14d"
+  },
+  {
+   "series": "propane | Midwest (PADD 2)",
+   "period": 12,
+   "n_origins": 60,
+   "rmse": {
+    "naive": 95.743,
+    "moving_average_14d": 122.908,
+    "seasonal_naive": 62.537,
+    "seasonal_drift": 67.432,
+    "ridge": 53.905,
+    "gbm": 55.954,
+    "ensemble_seasonal_ridge": 56.313,
+    "mean_all_6": 57.99,
+    "median_all_6": 54.791,
+    "mean_seasonal_drift_ridge": 56.161,
+    "mean_ma14_seasonal_ridge": 65.709,
+    "mean_ridge_seasonal_drift": 56.211
+   },
+   "wape": {
+    "naive": 47.8,
+    "moving_average_14d": 69.56,
+    "seasonal_naive": 33.15,
+    "seasonal_drift": 35.53,
+    "ridge": 28.42,
+    "gbm": 29.82,
+    "ensemble_seasonal_ridge": 30.18,
+    "mean_all_6": 31.01,
+    "median_all_6": 29.18,
+    "mean_seasonal_drift_ridge": 30.21,
+    "mean_ma14_seasonal_ridge": 35.53,
+    "mean_ridge_seasonal_drift": 30.12
+   },
+   "best": "ridge"
+  },
+  {
+   "series": "propane | Rocky Mountain (PADD 4)",
+   "period": 12,
+   "n_origins": 60,
+   "rmse": {
+    "naive": 10.425,
+    "moving_average_14d": 11.061,
+    "seasonal_naive": 10.727,
+    "seasonal_drift": 10.594,
+    "ridge": 8.052,
+    "gbm": 9.565,
+    "ensemble_seasonal_ridge": 8.598,
+    "mean_all_6": 7.81,
+    "median_all_6": 8.134,
+    "mean_seasonal_drift_ridge": 8.598,
+    "mean_ma14_seasonal_ridge": 8.175,
+    "mean_ridge_seasonal_drift": 8.402
+   },
+   "wape": {
+    "naive": 19.1,
+    "moving_average_14d": 23.54,
+    "seasonal_naive": 21.34,
+    "seasonal_drift": 19.05,
+    "ridge": 14.5,
+    "gbm": 18.42,
+    "ensemble_seasonal_ridge": 15.84,
+    "mean_all_6": 14.51,
+    "median_all_6": 14.81,
+    "mean_seasonal_drift_ridge": 15.84,
+    "mean_ma14_seasonal_ridge": 16.62,
+    "mean_ridge_seasonal_drift": 14.68
+   },
+   "best": "mean_all_6"
+  },
+  {
+   "series": "propane | West Coast (PADD 5)",
+   "period": 12,
+   "n_origins": 60,
+   "rmse": {
+    "naive": 13.666,
+    "moving_average_14d": 13.998,
+    "seasonal_naive": 11.021,
+    "seasonal_drift": 12.673,
+    "ridge": 9.261,
+    "gbm": 10.041,
+    "ensemble_seasonal_ridge": 10.071,
+    "mean_all_6": 9.27,
+    "median_all_6": 9.402,
+    "mean_seasonal_drift_ridge": 10.071,
+    "mean_ma14_seasonal_ridge": 9.42,
+    "mean_ridge_seasonal_drift": 10.022
+   },
+   "wape": {
+    "naive": 24.0,
+    "moving_average_14d": 24.64,
+    "seasonal_naive": 16.98,
+    "seasonal_drift": 21.44,
+    "ridge": 16.4,
+    "gbm": 17.54,
+    "ensemble_seasonal_ridge": 16.63,
+    "mean_all_6": 16.16,
+    "median_all_6": 16.3,
+    "mean_seasonal_drift_ridge": 16.63,
+    "mean_ma14_seasonal_ridge": 16.34,
+    "mean_ridge_seasonal_drift": 17.3
+   },
+   "best": "ridge"
+  },
+  {
+   "series": "propane_and_propylene | East Coast (PADD 1)",
+   "period": 12,
+   "n_origins": 60,
+   "rmse": {
+    "naive": 56.768,
+    "moving_average_14d": 79.821,
+    "seasonal_naive": 44.182,
+    "seasonal_drift": 43.685,
+    "ridge": 32.464,
+    "gbm": 35.376,
+    "ensemble_seasonal_ridge": 35.912,
+    "mean_all_6": 35.839,
+    "median_all_6": 34.602,
+    "mean_seasonal_drift_ridge": 35.912,
+    "mean_ma14_seasonal_ridge": 42.893,
+    "mean_ridge_seasonal_drift": 34.494
+   },
+   "wape": {
+    "naive": 14.57,
+    "moving_average_14d": 20.96,
+    "seasonal_naive": 11.16,
+    "seasonal_drift": 10.96,
+    "ridge": 7.69,
+    "gbm": 8.48,
+    "ensemble_seasonal_ridge": 8.84,
+    "mean_all_6": 8.5,
+    "median_all_6": 8.32,
+    "mean_seasonal_drift_ridge": 8.84,
+    "mean_ma14_seasonal_ridge": 9.45,
+    "mean_ridge_seasonal_drift": 8.5
+   },
+   "best": "ridge"
+  },
+  {
+   "series": "propane_and_propylene | Gulf Coast (PADD 3)",
+   "period": 12,
+   "n_origins": 60,
+   "rmse": {
+    "naive": 97.876,
+    "moving_average_14d": 77.178,
+    "seasonal_naive": 90.842,
+    "seasonal_drift": 104.385,
+    "ridge": 77.413,
+    "gbm": 85.056,
+    "ensemble_seasonal_ridge": 82.134,
+    "mean_all_6": 76.528,
+    "median_all_6": 76.945,
+    "mean_seasonal_drift_ridge": 82.134,
+    "mean_ma14_seasonal_ridge": 74.028,
+    "mean_ridge_seasonal_drift": 82.432
+   },
+   "wape": {
+    "naive": 16.31,
+    "moving_average_14d": 12.68,
+    "seasonal_naive": 14.72,
+    "seasonal_drift": 16.22,
+    "ridge": 12.8,
+    "gbm": 13.68,
+    "ensemble_seasonal_ridge": 13.02,
+    "mean_all_6": 12.25,
+    "median_all_6": 12.2,
+    "mean_seasonal_drift_ridge": 13.02,
+    "mean_ma14_seasonal_ridge": 11.85,
+    "mean_ridge_seasonal_drift": 13.25
+   },
+   "best": "mean_ma14_seasonal_ridge"
+  },
+  {
+   "series": "propane_and_propylene | Midwest (PADD 2)",
+   "period": 12,
+   "n_origins": 60,
+   "rmse": {
+    "naive": 81.417,
+    "moving_average_14d": 116.121,
+    "seasonal_naive": 57.506,
+    "seasonal_drift": 54.251,
+    "ridge": 43.508,
+    "gbm": 53.461,
+    "ensemble_seasonal_ridge": 47.16,
+    "mean_all_6": 47.469,
+    "median_all_6": 46.953,
+    "mean_seasonal_drift_ridge": 47.16,
+    "mean_ma14_seasonal_ridge": 56.537,
+    "mean_ridge_seasonal_drift": 44.732
+   },
+   "wape": {
+    "naive": 28.15,
+    "moving_average_14d": 45.84,
+    "seasonal_naive": 20.08,
+    "seasonal_drift": 18.56,
+    "ridge": 16.15,
+    "gbm": 18.69,
+    "ensemble_seasonal_ridge": 16.27,
+    "mean_all_6": 16.57,
+    "median_all_6": 16.19,
+    "mean_seasonal_drift_ridge": 16.27,
+    "mean_ma14_seasonal_ridge": 20.21,
+    "mean_ridge_seasonal_drift": 15.57
+   },
+   "best": "ridge"
+  },
+  {
+   "series": "propane_and_propylene | Rocky Mountain (PADD 4)",
+   "period": 12,
+   "n_origins": 60,
+   "rmse": {
+    "naive": 16.544,
+    "moving_average_14d": 17.8,
+    "seasonal_naive": 19.689,
+    "seasonal_drift": 19.198,
+    "ridge": 13.712,
+    "gbm": 14.689,
+    "ensemble_seasonal_ridge": 15.794,
+    "mean_all_6": 14.464,
+    "median_all_6": 14.314,
+    "mean_seasonal_drift_ridge": 15.794,
+    "mean_ma14_seasonal_ridge": 15.132,
+    "mean_ridge_seasonal_drift": 15.5
+   },
+   "wape": {
+    "naive": 25.97,
+    "moving_average_14d": 31.15,
+    "seasonal_naive": 32.99,
+    "seasonal_drift": 25.72,
+    "ridge": 19.05,
+    "gbm": 22.54,
+    "ensemble_seasonal_ridge": 23.07,
+    "mean_all_6": 21.71,
+    "median_all_6": 20.67,
+    "mean_seasonal_drift_ridge": 23.07,
+    "mean_ma14_seasonal_ridge": 24.7,
+    "mean_ridge_seasonal_drift": 20.54
+   },
+   "best": "ridge"
+  },
+  {
+   "series": "propane_and_propylene | West Coast (PADD 5)",
+   "period": 12,
+   "n_origins": 60,
+   "rmse": {
+    "naive": 16.972,
+    "moving_average_14d": 18.305,
+    "seasonal_naive": 15.627,
+    "seasonal_drift": 16.069,
+    "ridge": 11.848,
+    "gbm": 12.266,
+    "ensemble_seasonal_ridge": 13.138,
+    "mean_all_6": 12.498,
+    "median_all_6": 12.173,
+    "mean_seasonal_drift_ridge": 13.138,
+    "mean_ma14_seasonal_ridge": 13.316,
+    "mean_ridge_seasonal_drift": 12.843
+   },
+   "wape": {
+    "naive": 21.73,
+    "moving_average_14d": 23.6,
+    "seasonal_naive": 20.37,
+    "seasonal_drift": 21.77,
+    "ridge": 14.53,
+    "gbm": 14.89,
+    "ensemble_seasonal_ridge": 17.2,
+    "mean_all_6": 15.94,
+    "median_all_6": 15.34,
+    "mean_seasonal_drift_ridge": 17.2,
+    "mean_ma14_seasonal_ridge": 16.45,
+    "mean_ridge_seasonal_drift": 16.96
+   },
+   "best": "ridge"
+  }
+ ],
+ "regional_mean_rmse": {
+  "naive": 53.72614617995699,
+  "moving_average_14d": 61.33919659136833,
+  "seasonal_naive": 43.84028943255581,
+  "seasonal_drift": 45.520121513667405,
+  "ridge": 34.74272519654493,
+  "gbm": 39.51496202051563,
+  "ensemble_seasonal_ridge": 37.51557774012754,
+  "mean_all_6": 36.89031384856018,
+  "median_all_6": 35.99873464257573,
+  "mean_seasonal_drift_ridge": 37.5003883700847,
+  "mean_ma14_seasonal_ridge": 39.780443828152194,
+  "mean_ridge_seasonal_drift": 36.77437064231667
+ },
+ "regional_mean_relative_rmse_pct": {
+  "naive": 53.69027046862793,
+  "moving_average_14d": 79.29434599922473,
+  "seasonal_naive": 29.890113013991805,
+  "seasonal_drift": 33.189863276278466,
+  "ridge": 0.8157521489873254,
+  "gbm": 14.76309431460978,
+  "ensemble_seasonal_ridge": 9.668178532428628,
+  "mean_all_6": 6.744744705398609,
+  "median_all_6": 4.6919510355019955,
+  "mean_seasonal_drift_ridge": 9.640000337225096,
+  "mean_ma14_seasonal_ridge": 15.711689667115113,
+  "mean_ridge_seasonal_drift": 7.331241949297396
+ },
+ "regional_max_relative_rmse_pct": {
+  "naive": 87.13012038309196,
+  "moving_average_14d": 170.82554957972752,
+  "seasonal_naive": 43.591924594786406,
+  "seasonal_drift": 41.00623528646678,
+  "ridge": 4.572010793327652,
+  "gbm": 46.431527827287965,
+  "ensemble_seasonal_ridge": 15.181361392391391,
+  "mean_all_6": 22.028797590024986,
+  "median_all_6": 10.990570191487059,
+  "mean_seasonal_drift_ridge": 15.181361392391391,
+  "mean_ma14_seasonal_ridge": 42.68397967934452,
+  "mean_ridge_seasonal_drift": 13.043648831342392
+ },
+ "regional_wins": {
+  "naive": 0,
+  "moving_average_14d": 1,
+  "seasonal_naive": 0,
+  "seasonal_drift": 0,
+  "ridge": 7,
+  "gbm": 0,
+  "ensemble_seasonal_ridge": 0,
+  "mean_all_6": 1,
+  "median_all_6": 0,
+  "mean_seasonal_drift_ridge": 0,
+  "mean_ma14_seasonal_ridge": 1,
+  "mean_ridge_seasonal_drift": 0
+ },
+ "weekly_history_sensitivity": [
+  {
+   "history_length": 120,
+   "n_origins": 40,
+   "ridge_rmse": 281.8188969689143,
+   "ensemble_rmse": 180.4478951504534,
+   "ma14_rmse": 281.8188969689143,
+   "best_seasonal_rmse": 199.04214377864804
+  },
+  {
+   "history_length": 200,
+   "n_origins": 52,
+   "ridge_rmse": 172.6860247778544,
+   "ensemble_rmse": 139.1853824572367,
+   "ma14_rmse": 285.2998163063874,
+   "best_seasonal_rmse": 155.5942084150554
+  },
+  {
+   "history_length": 300,
+   "n_origins": 52,
+   "ridge_rmse": 154.8987433794315,
+   "ensemble_rmse": 153.47288517978245,
+   "ma14_rmse": 283.14774276121153,
+   "best_seasonal_rmse": 177.70309683570514
+  },
+  {
+   "history_length": 500,
+   "n_origins": 52,
+   "ridge_rmse": 158.81344518774634,
+   "ensemble_rmse": 158.3200979713341,
+   "ma14_rmse": 253.01360733847923,
+   "best_seasonal_rmse": 167.02810248347663
+  },
+  {
+   "history_length": 800,
+   "n_origins": 52,
+   "ridge_rmse": 235.176134809149,
+   "ensemble_rmse": 267.88641489170396,
+   "ma14_rmse": 395.2937784873828,
+   "best_seasonal_rmse": 314.9803717938383
+  },
+  {
+   "history_length": 1180,
+   "n_origins": 52,
+   "ridge_rmse": 231.48495903418956,
+   "ensemble_rmse": 296.601308854945,
+   "ma14_rmse": 315.62743758481764,
+   "best_seasonal_rmse": 346.2219997009478
+  }
+ ]
+}

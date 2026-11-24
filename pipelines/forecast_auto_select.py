@@ -31,12 +31,15 @@ def table(y, period, n_origins, horizon, refit_gbm):
 
 ORDER = ["naive", "moving_average_14d", "seasonal_naive", "seasonal_drift", "ridge", "gbm"]
 TOLS = (0.0, 0.05, 0.10, 0.20)
+ALL = ORDER + [k for k in KINDS if k not in ORDER]      # parsimony order; combinations last
 
 
 def choose(inner, tol):
-    """Simplest method (in ORDER) whose inner-window RMSE is within `tol` of the best inner RMSE."""
+    """Simplest method (in ALL) whose inner-window RMSE is within `tol` of the best inner RMSE."""
     best = min(inner.values())
-    return next(k for k in ORDER if inner[k] <= best * (1 + tol))
+    if not (best > 0) or best != best:                      # constant or degenerate series
+        return min(ALL, key=lambda k: inner[k])
+    return next(k for k in ALL if inner[k] <= best * (1 + tol))
 
 
 def auto(y, period, n_origins, horizon, refit_gbm, inner=0.7):

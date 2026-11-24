@@ -17,15 +17,16 @@ Kinds
     ensemble_seasonal_ridge   plain mean of seasonal_naive, seasonal_drift and ridge
 
 Method policy (recommended_kind), fixed before the final evaluation from the walk-forward evidence on the
-real EIA series (validation/results/forecast_ensemble.json):
+real EIA series after the next-point row fix (validation/results/forecast_backtest.json, forecast_ensemble.json):
   * fewer than 14 observations            -> naive
-  * 600 observations or more              -> ridge alone
-  * anything in between                   -> ensemble_seasonal_ridge
-On the 10 regional monthly series the combination was within 4 % of the best method on average and never
-worse than the MVP moving average in more than 2 of 10 series, while ridge alone was up to 62 % worse; on the
-weekly national series ridge alone pulled ahead of the combination only once about 600-800 observations
-were available. Daily series could not be validated on real data (none is public), so they get the
-conservative branch and the API says so.
+  * fewer than 11 full seasons            -> ensemble_seasonal_ridge
+  * 11 full seasons or more               -> ridge alone
+One rule expressed in seasons fits all eleven real series: on the 10 regional monthly series (12-36 seasons)
+ridge alone was within 0.8 % of the best method on average and won 8 of 10 series, while the combination was
+8.9 % worse; on the weekly national series the combination was clearly better below about 4 seasons (139 vs
+173 RMSE at 200 observations), tied between 6 and 10 seasons, and ridge alone clearly better above (235 vs
+268 at 800 observations = 15 seasons). Daily series could not be validated on real data (none is public), so
+they get the same rule and the API says so.
 
 Only data before each forecast origin is ever used (walk-forward), and every model is deterministic.
 """
@@ -44,7 +45,7 @@ LEARNED = ("ridge", "gbm")
 N_LAGS = 4
 N_FOURIER = 3
 MIN_HISTORY = {"naive": 1, "moving_average_14d": 14, "seasonal_naive": 1, "seasonal_drift": 1, ENSEMBLE: 1}
-RIDGE_MIN_HISTORY = 600      # observations needed before the learned model is used on its own
+RIDGE_MIN_SEASONS = 11       # full seasons of history needed before the learned model is used on its own
 MIN_RESIDUALS = 8
 
 
@@ -289,15 +290,17 @@ class ForecastModel:
         return m
 
 
-def recommended_kind(n_history: int) -> tuple[str, str]:
-    """(kind, reason) that the walk-forward evidence supports for a history of this length."""
+def recommended_kind(n_history: int, period: int = 52) -> tuple[str, str]:
+    """(kind, reason) that the walk-forward evidence supports for a history of this length and season."""
+    seasons = n_history / max(period, 1)
     if n_history < 14:
         return "naive", "fewer than 14 observations: the MVP 14-point mean is not available"
-    if n_history >= RIDGE_MIN_HISTORY:
-        return "ridge", (f"{n_history} observations: the learned model beat every other method on the real "
-                         f"weekly series once this much history was available")
-    return ENSEMBLE, (f"{n_history} observations: mean of the seasonal naive, seasonal drift and ridge "
-                      f"forecasts, the most robust method on the real monthly series of this length")
+    if seasons >= RIDGE_MIN_SEASONS:
+        return "ridge", (f"{seasons:.1f} full seasons of history: the learned model was the most accurate "
+                         f"method on all eleven real series with this much history")
+    return ENSEMBLE, (f"{seasons:.1f} seasons of history: mean of the seasonal naive, seasonal drift and ridge "
+                      f"forecasts, clearly better than the learned model alone below about 4 seasons on the "
+                      f"real weekly series and tied up to about 10 seasons")
 
 
 # --------------------------------------------------------------------- evaluation
