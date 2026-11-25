@@ -1,0 +1,207 @@
+{
+  "module": "FR-07 ensemble weight calibration",
+  "run_at": "2026-11-25T07:19:13Z",
+  "data_file": "data/eia/eia_weekly_us_propane_propylene_product_supplied.csv",
+  "data_sha256": "de35e908a9554c6192e52c1669ee01f2d1b2e366a4969408ec17ecfeb8d1f4f9",
+  "series_last_date": "2026-11-13",
+  "period_weeks": 52,
+  "horizons_weeks": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "protocol": "walk-forward per member (seasonal_naive, seasonal_drift, ridge), refit_every=1; weights fit on the first 65% of origins and evaluated on the rest; pooled over horizons 1-4; NNLS renormalised to sum 1; skill = 1 - MSE(best)/MSE(equal), moving-block bootstrap",
+  "long_history": {
+    "n_points": 1180,
+    "n_origins": 260,
+    "n_fit_origins": 169,
+    "schemes": {
+      "equal": {
+        "weights": {
+          "seasonal_naive": 0.333333,
+          "seasonal_drift": 0.333333,
+          "ridge": 0.333333
+        },
+        "note": "production default",
+        "fit_rmse_pooled": 312.353,
+        "eval_rmse_per_horizon": [
+          278.348,
+          267.159,
+          272.943,
+          280.955
+        ],
+        "eval_rmse_pooled": 274.883,
+        "eval_mae_pooled": 224.89,
+        "eval_bias_pooled": 23.078
+      },
+      "inverse_rmse": {
+        "weights": {
+          "seasonal_naive": 0.294503,
+          "seasonal_drift": 0.295362,
+          "ridge": 0.410135
+        },
+        "fit_rmse_pooled": 303.11,
+        "eval_rmse_per_horizon": [
+          268.764,
+          258.161,
+          264.04,
+          272.023
+        ],
+        "eval_rmse_pooled": 265.776,
+        "eval_mae_pooled": 217.519,
+        "eval_bias_pooled": 25.748
+      },
+      "nnls": {
+        "weights": {
+          "seasonal_naive": 0.043951,
+          "seasonal_drift": 0.043702,
+          "ridge": 0.912347
+        },
+        "fit_rmse_pooled": 272.838,
+        "eval_rmse_per_horizon": [
+          241.969,
+          233.418,
+          241.735,
+          245.956
+        ],
+        "eval_rmse_pooled": 240.784,
+        "eval_mae_pooled": 197.229,
+        "eval_bias_pooled": 43.208
+      }
+    },
+    "members_eval_reference": {
+      "seasonal_naive": {
+        "eval_rmse_h1": 321.584,
+        "eval_rmse_pooled": 320.228
+      },
+      "seasonal_drift": {
+        "eval_rmse_h1": 355.009,
+        "eval_rmse_pooled": 348.315
+      },
+      "ridge": {
+        "eval_rmse_h1": 244.615,
+        "eval_rmse_pooled": 243.421
+      }
+    },
+    "production_ensemble_walk_forward": {
+      "eval_rmse_pooled": 273.803,
+      "eval_rmse_per_horizon": [
+        278.348,
+        267.303,
+        272.465,
+        276.966
+      ],
+      "eval_mae_pooled": 224.101,
+      "eval_bias_pooled": 23.957,
+      "coverage80_h1_all_origins": 0.554
+    },
+    "verdict": {
+      "best_scheme": "nnls",
+      "eval_rmse_gain_pct_vs_equal": 12.4,
+      "skill_vs_equal": 0.2327,
+      "skill_ci95": [
+        0.1006,
+        0.3522
+      ],
+      "significant": true,
+      "ridge_alone_eval_rmse_pooled": 243.421
+    }
+  },
+  "short_history": {
+    "n_points": 300,
+    "n_origins": 100,
+    "n_fit_origins": 65,
+    "schemes": {
+      "equal": {
+        "weights": {
+          "seasonal_naive": 0.333333,
+          "seasonal_drift": 0.333333,
+          "ridge": 0.333333
+        },
+        "note": "production default",
+        "fit_rmse_pooled": 261.58,
+        "eval_rmse_per_horizon": [
+          292.025,
+          291.703,
+          288.535,
+          294.198
+        ],
+        "eval_rmse_pooled": 291.61,
+        "eval_mae_pooled": 240.818,
+        "eval_bias_pooled": -9.096
+      },
+      "inverse_rmse": {
+        "weights": {
+          "seasonal_naive": 0.315861,
+          "seasonal_drift": 0.290909,
+          "ridge": 0.39323
+        },
+        "fit_rmse_pooled": 255.152,
+        "eval_rmse_per_horizon": [
+          282.33,
+          284.851,
+          280.863,
+          285.198
+        ],
+        "eval_rmse_pooled": 283.299,
+        "eval_mae_pooled": 235.783,
+        "eval_bias_pooled": -7.166
+      },
+      "nnls": {
+        "weights": {
+          "seasonal_naive": 0.226565,
+          "seasonal_drift": 0.0,
+          "ridge": 0.773435
+        },
+        "fit_rmse_pooled": 235.693,
+        "eval_rmse_per_horizon": [
+          237.395,
+          252.161,
+          246.127,
+          237.807
+        ],
+        "eval_rmse_pooled": 243.469,
+        "eval_mae_pooled": 213.486,
+        "eval_bias_pooled": 4.653
+      }
+    },
+    "members_eval_reference": {
+      "seasonal_naive": {
+        "eval_rmse_h1": 337.731,
+        "eval_rmse_pooled": 335.728
+      },
+      "seasonal_drift": {
+        "eval_rmse_h1": 377.998,
+        "eval_rmse_pooled": 365.316
+      },
+      "ridge": {
+        "eval_rmse_h1": 227.013,
+        "eval_rmse_pooled": 233.54
+      }
+    },
+    "production_ensemble_walk_forward": {
+      "eval_rmse_pooled": 294.129,
+      "eval_rmse_per_horizon": [
+        292.025,
+        299.645,
+        293.894,
+        290.729
+      ],
+      "eval_mae_pooled": 240.78,
+      "eval_bias_pooled": -5.782,
+      "coverage80_h1_all_origins": 0.63
+    },
+    "verdict": {
+      "best_scheme": "nnls",
+      "eval_rmse_gain_pct_vs_equal": 16.51,
+      "skill_vs_equal": 0.3029,
+      "skill_ci95": [
+        0.1265,
+        0.4172
+      ],
+      "significant": true,
+      "ridge_alone_eval_rmse_pooled": 233.54
+    }
+  }
+}

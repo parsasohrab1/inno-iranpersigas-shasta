@@ -1,0 +1,47 @@
+{
+  "recent": {
+    "window_first_date": "2021-02-19",
+    "window_last_date": "2026-11-13",
+    "nnls_weights": {
+      "seasonal_naive": 0.226565,
+      "seasonal_drift": 0.0,
+      "ridge": 0.773435
+    },
+    "eval_rmse": {
+      "equal": 291.61,
+      "nnls": 243.469,
+      "ridge_alone": 233.54
+    },
+    "gain_pct_vs_equal": 16.51
+  },
+  "covid_era": {
+    "window_first_date": "2018-04-06",
+    "window_last_date": "2023-12-29",
+    "nnls_weights": {
+      "seasonal_naive": 0.171225,
+      "seasonal_drift": 0.0,
+      "ridge": 0.828775
+    },
+    "eval_rmse": {
+      "equal": 256.461,
+      "nnls": 257.156,
+      "ridge_alone": 276.459
+    },
+    "gain_pct_vs_equal": 1.84
+  },
+  "pre_covid": {
+    "window_first_date": "2015-05-22",
+    "window_last_date": "2021-02-12",
+    "nnls_weights": {
+      "seasonal_naive": 0.0,
+      "seasonal_drift": 0.033872,
+      "ridge": 0.966128
+    },
+    "eval_rmse": {
+      "equal": 316.856,
+      "nnls": 261.813,
+      "ridge_alone": 262.586
+    },
+    "gain_pct_vs_equal": 17.37
+  }
+}
