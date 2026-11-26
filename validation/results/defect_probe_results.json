@@ -1,0 +1,137 @@
+[
+ {
+  "probe": "P1 create_user accepts the password as a URL query parameter",
+  "confirmed": true,
+  "evidence": {
+   "status": 201,
+   "password_in_url": true,
+   "note": "OAuth2 access logs and proxy logs record the full query string"
+  }
+ },
+ {
+  "probe": "P2 empty password can be created and logs in (no password policy)",
+  "confirmed": false,
+  "evidence": {
+   "create": 201,
+   "login": 422
+  }
+ },
+ {
+  "probe": "P3 filling is accepted for a cylinder whose status is 'rejected' (leak)",
+  "confirmed": true,
+  "evidence": {
+   "first_filling_action": "reject",
+   "second_filling_status": 201,
+   "cylinder_status_after": "rejected"
+  }
+ },
+ {
+  "probe": "P4 /api/inspections accepts limit=1000000000 (no upper bound)",
+  "confirmed": true,
+  "evidence": {
+   "status": 200,
+   "note": "cylinders caps at le=2000; inspections/fillings/anomalies do not"
+  }
+ },
+ {
+  "probe": "P5 duplicate barcode returns HTTP 500 instead of 409",
+  "confirmed": true,
+  "evidence": {
+   "first": 201,
+   "duplicate": 500
+  }
+ },
+ {
+  "probe": "P6 target_weight 20 lb accepted while rated capacity is 15 lb (input not validated)",
+  "confirmed": true,
+  "evidence": {
+   "status": 201,
+   "anomaly": "overfill"
+  }
+ },
+ {
+  "probe": "P7 interval width does not widen with the forecast horizon",
+  "confirmed": false,
+  "evidence": {
+   "widths_per_step": [
+    678.63,
+    678.63,
+    678.62,
+    678.63
+   ],
+   "model": "ridge"
+  }
+ },
+ {
+  "probe": "P8a GET lifecycle returns 500 for a cylinder without last_hydro_test (valid at creation)",
+  "confirmed": true,
+  "evidence": {
+   "status": 500,
+   "note": "POST allows last_hydro_test=null; assess_lifecycle calls date.fromisoformat(None)"
+  }
+ },
+ {
+  "probe": "P8b cylinders table has no requalification_date column (suspend can never be cleared via API)",
+  "confirmed": true,
+  "evidence": {
+   "columns": [
+    "id",
+    "serial",
+    "barcode",
+    "manufacture_date",
+    "last_hydro_test",
+    "status",
+    "region",
+    "fill_count",
+    "fail_count",
+    "last_inspection_date",
+    "last_inspection_result",
+    "last_inspection_severity",
+    "created_at"
+   ]
+  }
+ },
+ {
+  "probe": "P9 regional endpoint may use a shorter series than the region's longest (alphabetical pick)",
+  "confirmed": true,
+  "evidence": {
+   "East Coast (PADD 1)": {
+    "picked": "propane",
+    "picked_len": 200,
+    "longest": "propane_and_propylene",
+    "longest_len": 432
+   },
+   "Gulf Coast (PADD 3)": {
+    "picked": "propane",
+    "picked_len": 200,
+    "longest": "propane_and_propylene",
+    "longest_len": 432
+   },
+   "Midwest (PADD 2)": {
+    "picked": "propane",
+    "picked_len": 200,
+    "longest": "propane_and_propylene",
+    "longest_len": 432
+   },
+   "Rocky Mountain (PADD 4)": {
+    "picked": "propane",
+    "picked_len": 200,
+    "longest": "propane_and_propylene",
+    "longest_len": 432
+   },
+   "West Coast (PADD 5)": {
+    "picked": "propane",
+    "picked_len": 200,
+    "longest": "propane_and_propylene",
+    "longest_len": 432
+   }
+  }
+ },
+ {
+  "probe": "P10 audit_log rows can be edited in place without detection (no hash chain)",
+  "confirmed": true,
+  "evidence": {
+   "edited_actor": "someone-else"
+  }
+ }
+]
