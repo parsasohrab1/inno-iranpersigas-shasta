@@ -84,6 +84,14 @@ def test_walk_forward_shapes_and_bounds():
     assert (lo <= hi).all() and origins[-1] == len(y) - 1
 
 
+def test_interval_widens_with_horizon():
+    y = _series(200, 12)
+    m = ForecastModel("ridge", 12).fit(y)
+    lo1, hi1 = m.interval(0.8, 1)
+    lo4, hi4 = m.interval(0.8, 4)
+    assert abs((hi4 - lo4) - 2 * (hi1 - lo1)) < 1e-6    # sqrt(4) = 2; horizon 1 is unchanged
+
+
 def test_unknown_kind_rejected():
     with pytest.raises(ValueError):
         ForecastModel("transformer", 12)

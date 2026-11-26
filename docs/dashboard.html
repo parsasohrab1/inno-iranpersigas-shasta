@@ -23,7 +23,7 @@ footer { color:var(--mut); font-size:.75rem; margin-top:18px; line-height:1.8; }
 @media (max-width:640px) { th, td { padding:.3em .35em; } }
 </style></head><body><main>
 <h1>داشبورد اعتبارسنجی LCIS</h1>
-<div class="sub">سامانهٔ هوشمند کپسول‌های گاز مایع — پتروپالاتوس | نسخهٔ lcis-trl5-0.4.0 | همهٔ عددها از نتایج قابل بازتولید (run_validation.py) خوانده شده‌اند</div>
+<div class="sub">سامانهٔ هوشمند کپسول‌های گاز مایع — پتروپالاتوس | نسخهٔ lcis-trl5-0.5.0 | عددهای اعتبارسنجی از run_validation.py؛ عدد آزمون از pytest همین نسخه</div>
 
 <div class="grid">
   <div class="card">
@@ -59,9 +59,9 @@ footer { color:var(--mut); font-size:.75rem; margin-top:18px; line-height:1.8; }
   </div>
   <div class="card">
     <h3>پلتفرم و NFR ها</h3>
-    <div class="badge pass">۸۷ آزمون پاس</div>
+    <div class="badge pass">۱۰۹ آزمون پاس</div>
     <table><tr><th>سنجه</th><th>مقدار</th></tr>
-    <tr><td>پوشش کد (NFR-06 ≥ ۸۵٪)</td><td>۹۵٪</td></tr>
+    <tr><td>پوشش کد (NFR-06 ≥ ۸۵٪)</td><td>۹۴٪</td></tr>
     <tr><td>NFR-01 (پاسخ با ۱۰۰۰ رکورد)</td><td>&lt; ۵۰۰ms ✓</td></tr>
     <tr><td>نقش‌ها / حسابرسی</td><td>۶ نقش / هر درخواست ثبت می‌شود</td></tr>
     <tr><td>Docker / CI</td><td>آماده / pytest در هر push</td></tr>
@@ -72,6 +72,9 @@ footer { color:var(--mut); font-size:.75rem; margin-top:18px; line-height:1.8; }
 <div class="sens"><h3>حساسیت به طول تاریخچه (سری هفتگی ملی، ۵۲ مبدأ)</h3>
 <table><tr><th>تاریخچه (هفته)</th><th>ridge</th><th>ترکیب فصلی+ریج</th><th>MVP میانگین ۱۴</th></tr><tr><td>۱۲۰</td><td>۲۸۱.۸</td><td>۱۸۰.۴</td><td>۲۸۱.۸</td></tr><tr><td>۲۰۰</td><td>۱۷۲.۷</td><td>۱۳۹.۲</td><td>۲۸۵.۳</td></tr><tr><td>۳۰۰</td><td>۱۵۴.۹</td><td>۱۵۳.۵</td><td>۲۸۳.۱</td></tr><tr><td>۵۰۰</td><td>۱۵۸.۸</td><td>۱۵۸.۳</td><td>۲۵۳.۰</td></tr><tr><td>۸۰۰</td><td>۲۳۵.۲</td><td>۲۶۷.۹</td><td>۳۹۵.۳</td></tr><tr><td>۱۱۸۰</td><td>۲۳۱.۵</td><td>۲۹۶.۶</td><td>۳۱۵.۶</td></tr></table>
 <p class="note">قاعدهٔ انتخاب بر حسب فصل کامل: کمتر از ۱۱ فصل ← ترکیب؛ از ۱۱ فصل ← ridge به‌تنهایی.</p></div>
+<div class="sens"><h3>اصلاح نقص‌های ممیزی ۲۶ نوامبر ۲۰۲۶</h3>
+<p class="note">از ۳۰ یافتهٔ پیاده‌سازی، موارد کد در نسخهٔ ۰.۵.۰ بسته شد: کلید توکن دیگر داخل ایمیج نیست؛ چرخهٔ عمر بدون آزمون هیدروستاتیک خطای ۵۰۰ نمی‌دهد؛ کپسول ردشده پر نمی‌شود مگر پس از بازتأیید؛ پسورد فقط در بدنهٔ درخواست است؛ پیش‌بینی منطقه‌ای طولانی‌ترین سری را برمی‌دارد؛ زنجیرهٔ هش حسابرسی، سقف فهرست‌ها، و ذخیرهٔ حکم بینایی اضافه شد.</p>
+<p class="note">هنوز باز است: تأیید انسانی برچسب‌های بینایی (دستیار، نه بازرس مجاز)، دسترسی سطری بر اساس منطقه (تصمیم پایلوت)، کالیبراسیون پوشش بازه در افق‌های چندگامی (فعلاً پهنای یک‌گام در جذر افق ضرب می‌شود)، و جدول کامل MAV خارج از باند ۱۴٫۳ تا ۱۷٫۷ پوند که در NIST SP 2200-01 نقل شده است.</p></div>
 <footer>شواهد کامل: validation/results/*.json و نمودارهای validation/figures/ — گزارش ارزیابی TRL در LCIS_TRL_Report.pdf |
 منابع دادهٔ واقعی با هش SHA-256 در data/sources.json | تصاویر وب بازنشر نمی‌شوند؛ فقط برچسب و مانیفست.</footer>
 </main></body></html>

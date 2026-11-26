@@ -11,6 +11,8 @@ def test_national_weekly(client, inspector):
     assert "daily" in d["note"]                   # honest scope note is always returned
     for a, b in zip(d["records"], d["records"][1:]):
         assert a["date"] < b["date"] and a["lo80"] <= a["hi80"]
+    widths = [rec["hi80"] - rec["lo80"] for rec in d["records"]]
+    assert widths[-1] > widths[0]                 # the band widens with the horizon
 
 
 def test_regional_monthly(client, inspector):
@@ -18,11 +20,18 @@ def test_regional_monthly(client, inspector):
     assert r.status_code == 200, r.text
     d = r.json()
     assert d["period"] == 12 and "PADD 3" in d["series"] and len(d["records"]) == 4
+    assert "propane_and_propylene" in d["series"]  # longest series, not the alphabetical first
+    assert d["model"]["trained_on"] == 432
     assert d["unit"].startswith("thousand barrels")
 
 
 def test_unknown_region_404(client, inspector):
     assert client.get("/api/forecast?region=Atlantis", headers=inspector).status_code == 404
+
+
+def test_ambiguous_region_422(client, inspector):
+    r = client.get("/api/forecast?region=Coast", headers=inspector)
+    assert r.status_code == 422 and "more than one" in r.json()["detail"]
 
 
 def test_horizon_and_auth_guards(client):

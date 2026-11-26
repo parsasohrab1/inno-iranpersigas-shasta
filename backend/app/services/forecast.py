@@ -246,13 +246,19 @@ class ForecastModel:
             y.append(p)
         return out
 
-    def interval(self, level: float = 0.8) -> tuple[float, float]:
-        """Offsets (lo, hi) of the central interval around the point forecast, from held-out residuals."""
+    def interval(self, level: float = 0.8, horizon: int = 1) -> tuple[float, float]:
+        """Offsets (lo, hi) around the point forecast, from held-out one-step residuals.
+
+        D-12: a multi-step path must not reuse the one-step band. Until per-horizon walk-forward
+        coverage is calibrated, the one-step quantile is scaled by sqrt(horizon). Horizon 1 is unchanged,
+        so the published one-step coverage numbers still apply.
+        """
         r = np.asarray(self.resid_, dtype=float)
         if len(r) < MIN_RESIDUALS:
             return (0.0, 0.0)
         a = (1.0 - level) / 2.0
-        return float(np.quantile(r, a)), float(np.quantile(r, 1.0 - a))
+        scale = math.sqrt(max(1, int(horizon)))
+        return float(np.quantile(r, a)) * scale, float(np.quantile(r, 1.0 - a)) * scale
 
     # ------------------------------------------------------------- artefact
     def to_dict(self) -> dict:

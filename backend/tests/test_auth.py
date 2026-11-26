@@ -39,16 +39,20 @@ def test_role_denial(client, inspector, seeded):
 
 def test_admin_can_create_user(client, admin):
     name = "tmp-" + uuid.uuid4().hex[:8]
-    r = client.post(f"/api/auth/users?username={name}&password=pw12345&role=quality", headers=admin)
-    assert r.status_code == 201
-    r = client.post("/api/auth/token", data={"username": name, "password": "pw12345"})
+    r = client.post("/api/auth/users", json={"username": name, "password": "Temp-pass-123", "role": "quality"},
+                    headers=admin)
+    assert r.status_code == 201, r.text
+    r = client.post("/api/auth/token", data={"username": name, "password": "Temp-pass-123"})
     assert r.json()["role"] == "quality"
 
 
 def test_create_user_rejects_bad_role(client, admin):
-    assert client.post("/api/auth/users?username=x1&password=p&role=superuser", headers=admin).status_code == 422
+    r = client.post("/api/auth/users", json={"username": "x1badrole", "password": "Temp-pass-123",
+                                             "role": "superuser"}, headers=admin)
+    assert r.status_code == 422
 
 
 def test_duplicate_username(client, admin):
-    r = client.post("/api/auth/users?username=admin&password=p&role=quality", headers=admin)
+    r = client.post("/api/auth/users", json={"username": "admin", "password": "Temp-pass-123", "role": "quality"},
+                    headers=admin)
     assert r.status_code == 409

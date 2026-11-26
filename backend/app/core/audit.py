@@ -1,13 +1,85 @@
-"""FR-10 audit trail: every API call is recorded with actor, endpoint, status and duration (NFR-01 probe too)."""
+"""FR-10 audit trail: every API call is recorded with actor, endpoint, status and duration.
+
+D-19: each row carries prev_hash and row_hash (HMAC-SHA256). Editing a stored row breaks
+GET /api/audit/verify. D-28: a failed insert is counted and written to stderr; it still must not
+break the API response.
+"""
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
+import sys
 import time
 
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 
+from .config import AUDIT_KEY
 from .db import connect, utcnow
+
+_dropped = 0
+
+
+def dropped_count() -> int:
+    return _dropped
+
+
+def chain_hash(prev: str, actor, method: str, path: str, status_code: int,
+               duration_ms, detail) -> str:
+    payload = "\n".join([
+        prev or "",
+        "" if actor is None else str(actor),
+        str(method),
+        str(path),
+        str(int(status_code)),
+        "" if duration_ms is None else f"{float(duration_ms):.2f}",
+        "" if not detail else str(detail),
+    ])
+    return hmac.new(AUDIT_KEY, payload.encode(), hashlib.sha256).hexdigest()
+
+
+def record_audit(actor, method: str, path: str, status_code: int, duration_ms, detail) -> None:
+    """Append one chained audit row. Failures are counted and never raised."""
+    global _dropped
+    con = None
+    try:
+        con = connect()
+        con.execute("BEGIN IMMEDIATE")
+        last = con.execute("SELECT row_hash FROM audit_log ORDER BY id DESC LIMIT 1").fetchone()
+        prev = "" if last is None or not last["row_hash"] else last["row_hash"]
+        digest = chain_hash(prev, actor, method, path, status_code, duration_ms, detail)
+        con.execute(
+            "INSERT INTO audit_log (created_at, actor, method, path, status_code, duration_ms, detail, "
+            "prev_hash, row_hash) VALUES (?,?,?,?,?,?,?,?,?)",
+            (utcnow(), actor, method, path, int(status_code), duration_ms, detail or None, prev, digest))
+        con.commit()
+    except Exception as e:  # noqa: BLE001 - the audit DB may not exist yet during early startup
+        _dropped += 1
+        print(f"lcis audit drop #{_dropped}: {type(e).__name__}: {e}", file=sys.stderr)
+    finally:
+        if con is not None:
+            con.close()
+
+
+def verify_chain(con) -> dict:
+    """Recompute the hash chain. A tampered or legacy (unhashed) row fails the check."""
+    rows = list(con.execute(
+        "SELECT id, actor, method, path, status_code, duration_ms, detail, prev_hash, row_hash "
+        "FROM audit_log ORDER BY id"))
+    prev = ""
+    for row in rows:
+        if not row["row_hash"]:
+            return {"valid": False, "checked": row["id"] - 1 if rows else 0, "broken_at": row["id"],
+                    "reason": "row has no hash"}
+        expect_prev = prev
+        digest = chain_hash(expect_prev, row["actor"], row["method"], row["path"], row["status_code"],
+                            row["duration_ms"], row["detail"])
+        if (row["prev_hash"] or "") != expect_prev or row["row_hash"] != digest:
+            return {"valid": False, "checked": row["id"], "broken_at": row["id"],
+                    "reason": "hash does not match the stored row"}
+        prev = row["row_hash"]
+    return {"valid": True, "checked": len(rows), "broken_at": None, "reason": None}
 
 
 class AuditMiddleware(BaseHTTPMiddleware):
@@ -32,17 +104,8 @@ class AuditMiddleware(BaseHTTPMiddleware):
             status_code, detail = 500, f"{type(e).__name__}: {e}"
             raise
         finally:
-            try:
-                con = connect()
-                con.execute(
-                    "INSERT INTO audit_log (created_at, actor, method, path, status_code, duration_ms, detail) "
-                    "VALUES (?,?,?,?,?,?,?)",
-                    (utcnow(), actor, request.method, request.url.path, status_code,
-                     round((time.perf_counter() - t0) * 1000, 2), detail or None))
-                con.commit()
-                con.close()
-            except Exception:  # noqa: BLE001 - the audit DB may not exist yet during tests
-                pass
+            record_audit(actor, request.method, request.url.path, status_code,
+                         round((time.perf_counter() - t0) * 1000, 2), detail or None)
         return response
 
 
@@ -73,7 +136,8 @@ def counts_for_evidence(con) -> dict:
             "rnd_activities": one("SELECT COUNT(*) FROM rnd_activities"),
             "rnd_hours": round(one("SELECT COALESCE(SUM(hours),0) FROM rnd_activities"), 2),
             "rnd_cost": round(one("SELECT COALESCE(SUM(cost),0) FROM rnd_activities"), 2),
-            "audit_events": one("SELECT COUNT(*) FROM audit_log")}
+            "audit_events": one("SELECT COUNT(*) FROM audit_log"),
+            "vision_verdicts": one("SELECT COUNT(*) FROM vision_verdicts")}
 
 
 def dump_json(detail) -> str:

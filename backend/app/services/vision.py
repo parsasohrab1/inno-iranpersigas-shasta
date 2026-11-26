@@ -63,11 +63,20 @@ def extract_features(img: Image.Image) -> np.ndarray:
     return np.asarray(f, dtype=float)
 
 
+# D-27: refuse decompression bombs before the full raster is decoded. 12 megapixels is enough for a
+# close-up of a cylinder and far below Pillow's default (~179 MP).
+MAX_IMAGE_PIXELS = 12_000_000
+
+
 def features_from_bytes(data: bytes) -> np.ndarray:
     import io
+    Image.MAX_IMAGE_PIXELS = MAX_IMAGE_PIXELS
     try:
         img = Image.open(io.BytesIO(data))
+        img.draft("RGB", (256, 256))
         img.load()
+    except Image.DecompressionBombError as e:
+        raise ValueError(f"image exceeds the pixel limit: {e}") from None
     except Exception as e:  # noqa: BLE001
         raise ValueError(f"not a decodable image: {e}") from None
     return extract_features(img)
@@ -95,6 +104,12 @@ class VisionModel:
         return e / e.sum(axis=1, keepdims=True)
 
     def classify(self, feats: np.ndarray) -> dict:
+        feats = np.asarray(feats, dtype=float).reshape(-1)
+        expected = int(self.coef.shape[1])
+        if feats.shape[0] != expected or self.scaler_mean.shape[0] != expected:
+            raise ValueError(
+                f"feature length {feats.shape[0]} does not match the model ({expected}); "
+                f"feature_version={self.feature_version}. Refusing a silent skimage/artefact mismatch.")
         p = self.predict_proba(feats.reshape(1, -1))[0]
         top = int(np.argmax(p))
         cls, conf = self.classes[top], float(p[top])
@@ -121,9 +136,14 @@ class VisionModel:
 
     @classmethod
     def from_dict(cls, d: dict) -> "VisionModel":
-        return cls(classes=d["classes"], scaler_mean=np.asarray(d["scaler_mean"], float),
-                   scaler_scale=np.asarray(d["scaler_scale"], float), coef=np.asarray(d["coef"], float),
-                   intercept=np.asarray(d["intercept"], float), thresholds=d["thresholds"], meta=d["meta"])
+        model = cls(classes=d["classes"], scaler_mean=np.asarray(d["scaler_mean"], float),
+                    scaler_scale=np.asarray(d["scaler_scale"], float), coef=np.asarray(d["coef"], float),
+                    intercept=np.asarray(d["intercept"], float), thresholds=d["thresholds"], meta=d["meta"])
+        if model.coef.ndim != 2 or model.coef.shape[1] != model.scaler_mean.shape[0]:
+            raise ValueError("vision artefact feature dimension does not match its scaler")
+        if model.coef.shape[1] != model.scaler_scale.shape[0]:
+            raise ValueError("vision artefact scaler mean and scale have different lengths")
+        return model
 
 
 def artefact_path(ml_dir: str) -> str:

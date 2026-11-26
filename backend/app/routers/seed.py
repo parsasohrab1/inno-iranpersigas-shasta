@@ -10,7 +10,7 @@ import pandas as pd
 from fastapi import APIRouter, Depends, HTTPException
 from sqlite3 import Connection
 
-from ..core.config import DEFAULT_ADMIN, EIA_DIR
+from ..core.config import DEFAULT_ADMIN, EIA_DIR, ENV
 from ..core.db import get_db, utcnow
 from ..core.security import hash_password, require_role
 from ..services.lifecycle import assess_inspection
@@ -50,11 +50,14 @@ def _seed_demand(con: Connection) -> int:
 
 @router.post("", status_code=201)
 def seed(force: bool = False, user: dict = Depends(require_role("admin")), con: Connection = Depends(get_db)):
+    if ENV == "production":
+        raise HTTPException(403, "seed is disabled when LCIS_ENV=production")
     have = con.execute("SELECT COUNT(*) FROM cylinders").fetchone()[0]
     if have and not force:
         raise HTTPException(409, "database already seeded; call with force=true to reseed (wipes the tables)")
     if force:
-        for t in ("inspections", "fillings", "cylinders", "users", "demand", "rnd_activities"):
+        for t in ("inspections", "fillings", "cylinder_events", "vision_verdicts", "cylinders", "users",
+                  "demand", "rnd_activities"):
             con.execute(f"DELETE FROM {t}")  # noqa: S608 - table names are literals above; children first
     rng = random.Random(0)                        # deterministic seed data
     now = utcnow()
@@ -80,7 +83,8 @@ def seed(force: bool = False, user: dict = Depends(require_role("admin")), con: 
                     (cid, when, json.dumps([{"code": d} for d in defects]),
                      res, {"reject": "critical", "review": "minor", "pass": "none"}[res], "inspector1"))
         if res == "reject":
-            con.execute("UPDATE cylinders SET fail_count = fail_count + 1 WHERE id = ?", (cid,))
+            con.execute("UPDATE cylinders SET fail_count = fail_count + 1, status = 'rejected' WHERE id = ?",
+                        (cid,))
     for i in range(60):                           # FR-05
         cid = cyl_ids[i % len(cyl_ids)]
         leak = i % 17 == 0

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlite3 import Connection
 
@@ -45,9 +45,10 @@ def create_inspection(i: InspectionIn, user: dict = Depends(require_role("admin"
         "VALUES (?,?,?,?,?,?,?)",
         (i.cylinder_id, now, json.dumps([{"code": c, "note": d.note} for c, d in zip(codes, i.defects)],
                                         ensure_ascii=False), result, severity, i.image_url, user["username"]))
-    if result == "reject":                       # FR-03: a rejected inspection counts as a failure
-        con.execute("UPDATE cylinders SET fail_count = fail_count + 1, last_inspection_date = ?, "
-                    "last_inspection_result = ?, last_inspection_severity = ? WHERE id = ?",
+    if result == "reject":                       # FR-03: a rejected inspection counts as a failure and blocks refill
+        con.execute("UPDATE cylinders SET fail_count = fail_count + 1, status = 'rejected', "
+                    "last_inspection_date = ?, last_inspection_result = ?, last_inspection_severity = ? "
+                    "WHERE id = ?",
                     (now[:10], result, severity, i.cylinder_id))
     else:
         con.execute("UPDATE cylinders SET last_inspection_date = ?, last_inspection_result = ?, "
@@ -58,7 +59,8 @@ def create_inspection(i: InspectionIn, user: dict = Depends(require_role("admin"
 
 
 @router.get("")
-def list_inspections(cylinder_id: int | None = None, limit: int = 50, offset: int = 0,
+def list_inspections(cylinder_id: int | None = None, limit: int = Query(50, ge=1, le=2000),
+                     offset: int = Query(0, ge=0),
                      user: dict = Depends(current_user), con: Connection = Depends(get_db)):
     q, args = "SELECT * FROM inspections WHERE 1=1", []
     if cylinder_id is not None:

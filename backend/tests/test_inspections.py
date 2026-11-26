@@ -45,6 +45,7 @@ def test_inspection_verdicts(client, inspector, seeded):
     cyl = client.get(f"/api/cylinders/{cid}", headers=inspector).json()
     assert cyl["fail_count"] == 1            # FR-03: the rejected inspection counted
     assert cyl["last_inspection_result"] == "reject"
+    assert cyl["status"] == "rejected"       # a critical finding takes the cylinder out of the filling queue
 
 
 def test_inspection_unknown_defect(client, inspector, seeded):

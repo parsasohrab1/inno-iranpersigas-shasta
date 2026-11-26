@@ -3,9 +3,12 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+import os
 
-from .core.config import PRODUCT_VERSION
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+
+from .core.config import PRODUCT_ROOT, PRODUCT_VERSION
 from .core.db import init_db
 from .routers import audit_api, auth, cylinders, evidence, fillings, forecast, inspections, seed, vision_api
 
@@ -31,7 +34,14 @@ def create_app() -> FastAPI:
 
     @app.get("/", tags=["meta"])
     def root():
-        return {"service": "LCIS", "docs": "/docs", "health": "/health"}
+        return {"service": "LCIS", "docs": "/docs", "health": "/health", "dashboard": "/dashboard"}
+
+    @app.get("/dashboard", tags=["meta"], include_in_schema=False)
+    def dashboard():
+        path = os.path.join(PRODUCT_ROOT, "docs", "dashboard.html")
+        if not os.path.isfile(path):
+            raise HTTPException(404, "dashboard.html is missing")
+        return FileResponse(path, media_type="text/html; charset=utf-8")
     return app
 
 

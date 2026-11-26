@@ -68,9 +68,16 @@ def assess_lifecycle(cyl: dict, today: date | None = None, policy: LifecyclePoli
     today = today or date.today()
 
     def d(x):
-        return x if isinstance(x, date) else date.fromisoformat(str(x)[:10])
+        if isinstance(x, date):
+            return x
+        if x is None or str(x).strip() == "":
+            raise ValueError("missing date")
+        return date.fromisoformat(str(x)[:10])
 
-    made, last_test = d(cyl["manufacture_date"]), d(cyl["last_hydro_test"])
+    made = d(cyl["manufacture_date"])
+    raw_test = cyl.get("last_hydro_test")
+    untested = raw_test is None or str(raw_test).strip() == ""
+    last_test = made if untested else d(raw_test)
     fills = int(cyl.get("fill_count") or 0)
     fails = int(cyl.get("fail_count") or 0)
     insp = str(cyl.get("last_inspection_result") or "pass").lower()
@@ -90,20 +97,29 @@ def assess_lifecycle(cyl: dict, today: date | None = None, policy: LifecyclePoli
                        "(49 CFR 180.209(c))")
 
     interval = policy.extended_interval_years or policy.test_interval_years
-    due = next_test_date(last_test, interval)
-    days = (due - today).days
-    if days < 0:
+    if untested:
+        # D-02: a cylinder may be registered before its first periodic test. That is overdue, not a 500.
+        due = made
+        days = (due - today).days
         test_state = "overdue"
-        reasons.append(f"periodic test overdue by {-days} days")
+        reasons.append("no periodic test on record; treated as overdue until a requalification is recorded")
         if status == "in_service":
             status = "overdue_for_test"
-    elif days <= policy.due_window_days:
-        test_state = "due"
-        reasons.append(f"periodic test due in {days} days")
-        if status == "in_service":
-            status = "due_for_test"
     else:
-        test_state = "valid"
+        due = next_test_date(last_test, interval)
+        days = (due - today).days
+        if days < 0:
+            test_state = "overdue"
+            reasons.append(f"periodic test overdue by {-days} days")
+            if status == "in_service":
+                status = "overdue_for_test"
+        elif days <= policy.due_window_days:
+            test_state = "due"
+            reasons.append(f"periodic test due in {days} days")
+            if status == "in_service":
+                status = "due_for_test"
+        else:
+            test_state = "valid"
 
     age = _years(made, today)
     if policy.design_life_years is not None and age >= policy.design_life_years:

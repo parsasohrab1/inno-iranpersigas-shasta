@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlite3 import Connection
 
-from ..core.audit import audit_query, counts_for_evidence
+from ..core.audit import audit_query, counts_for_evidence, dropped_count, verify_chain
 from ..core.config import ML_DIR, PRODUCT_VERSION, VALIDATION_DIR
 from ..core.db import get_db, utcnow
 from ..core.security import current_user, require_role
@@ -81,8 +81,10 @@ def add_activity(a: ActivityIn, user: dict = Depends(require_role("admin", "qual
 @router.get("/rnd/activities")
 def list_activities(limit: int = Query(100, le=500), user: dict = Depends(current_user),
                     con: Connection = Depends(get_db)):
-    rows = [dict(r) for r in con.execute("SELECT * FROM rnd_activities ORDER BY id DESC LIMIT ?", (limit,))]
-    return {"total": len(rows), "rows": rows}
+    n = con.execute("SELECT COUNT(*) FROM rnd_activities").fetchone()[0]
+    rows = [dict(r) for r in con.execute(
+        "SELECT * FROM rnd_activities ORDER BY id DESC LIMIT ?", (limit,))]
+    return {"total": n, "rows": rows}
 
 
 audit_router = APIRouter(prefix="/api/audit", tags=["audit"])
@@ -103,4 +105,11 @@ def audit_summary(user: dict = Depends(require_role("admin", "auditor")), con: C
             "by_actor": [dict(r) for r in con.execute(
                 "SELECT actor, COUNT(*) AS n FROM audit_log GROUP BY actor ORDER BY n DESC LIMIT 20")],
             "slowest_ms": con.execute("SELECT MAX(duration_ms) FROM audit_log").fetchone()[0],
-            "mean_ms": con.execute("SELECT AVG(duration_ms) FROM audit_log").fetchone()[0]}
+            "mean_ms": con.execute("SELECT AVG(duration_ms) FROM audit_log").fetchone()[0],
+            "audit_dropped": dropped_count()}
+
+
+@audit_router.get("/verify")
+def verify_audit(user: dict = Depends(require_role("admin", "auditor")), con: Connection = Depends(get_db)):
+    """D-19: recompute the hash chain. A direct edit of audit_log fails this check."""
+    return verify_chain(con)

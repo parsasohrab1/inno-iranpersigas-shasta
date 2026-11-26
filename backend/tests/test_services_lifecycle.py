@@ -74,6 +74,13 @@ def test_next_test_date_feb29():
     assert next_test_date(date(2024, 2, 29), 5) == date(2029, 2, 28)
 
 
+def test_missing_hydro_test_is_overdue_not_an_error():
+    c = {"manufacture_date": "2010-01-01", "last_hydro_test": None, "fill_count": 0, "fail_count": 0}
+    r = assess_lifecycle(c, today=date(2026, 1, 1))
+    assert r["test_state"] == "overdue" and r["status"] == "overdue_for_test"
+    assert any("no periodic test" in x for x in r["reasons"])
+
+
 def test_assess_inspection_verdict_rule():
     assert assess_inspection(["crack"]) == "reject"
     assert assess_inspection(["valve_damage", "rust"]) == "reject"

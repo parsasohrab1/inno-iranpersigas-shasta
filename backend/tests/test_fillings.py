@@ -60,10 +60,15 @@ def test_filling_overfill(client, inspector, seeded):
                     headers=inspector).json()
     assert r["anomaly"] == "overfill" and r["action"] == "reject"
     assert r["overfill_severity"] == "up_to_5_pct"    # 0.5 lb over a 15 lb capacity = 3.3 %
-    r2 = client.post("/api/fillings", json={"cylinder_id": cid, "station_id": "ST-9", "target_weight": 15.0,
+    cid2 = _new_cyl(client, inspector)
+    r2 = client.post("/api/fillings", json={"cylinder_id": cid2, "station_id": "ST-9", "target_weight": 15.0,
                                             "actual_weight": 15.9, "rated_capacity": 15.0},
                      headers=inspector).json()
     assert r2["overfill_severity"] == "5_to_10_pct"   # 6 % over lands in the next NIST band
+    blocked = client.post("/api/fillings", json={"cylinder_id": cid, "station_id": "ST-9", "target_weight": 15.0,
+                                                 "actual_weight": 15.0, "rated_capacity": 15.0},
+                          headers=inspector)
+    assert blocked.status_code == 409                  # a rejected cylinder is not filled again
 
 
 def test_filling_validation_errors(client, inspector, seeded):

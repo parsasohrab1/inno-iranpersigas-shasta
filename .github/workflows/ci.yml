@@ -15,3 +15,9 @@ jobs:
       - name: Run the test suite (NFR-06: coverage >= 85 %)
         working-directory: backend
         run: pytest tests -q --cov=app --cov-report=term-missing --cov-fail-under=85
+      - name: Refuse a baked-in token secret
+        run: |
+          if grep -n "LCIS_SECRET=" Dockerfile; then
+            echo "Dockerfile must not assign LCIS_SECRET"
+            exit 1
+          fi

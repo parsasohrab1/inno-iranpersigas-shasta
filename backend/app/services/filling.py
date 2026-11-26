@@ -24,6 +24,8 @@ EPS = 1e-9   # comparisons at an exact threshold must not depend on floating-poi
 ANOMALIES = ("ok", "leak", "tare_loss", "short_fill", "overfill", "tare_out_of_tolerance")
 SCF = {12: 0.635}          # sample correction factor of the Category A sampling plan (NIST HB 133)
 MAV_EXAMPLE = (15.0, 0.28)  # NIST SP 2200-01, Appendix A: labelled 15 lb -> MAV 0.28 lb
+# The same appendix quotes 0.28 lb across the 14.3 lb ... 17.7 lb labelled band (not a linear scale).
+MAV_BAND_LB = (14.3, 17.7, 0.28)
 
 
 @dataclass(frozen=True)
@@ -74,6 +76,21 @@ def assess_tare(marked: float, measured: float, capacity: float | None = None, u
             "source": source}
 
 
+def mav_for(target_weight: float, unit: str = "lb", policy: FillPolicy = FillPolicy()) -> tuple[float, str]:
+    """MAV in the caller's unit, and where the number came from.
+
+    Inside the band quoted by NIST SP 2200-01 Appendix A the MAV is the published 0.28 lb.
+    Outside that band the linear scale of the 15 lb example is used and labelled as an approximation
+    (D-26): Handbook 133 Table 2-5 is not linear, and this repository only cites the one band.
+    """
+    if policy.mav is not None:
+        return float(policy.mav), "explicit"
+    lo, hi, mav_lb = MAV_BAND_LB
+    if unit == "lb" and lo - EPS <= target_weight <= hi + EPS:
+        return mav_lb, "nist_sp2200-01 appendix A (14.3 lb to 17.7 lb)"
+    return target_weight * MAV_EXAMPLE[1] / MAV_EXAMPLE[0], "linear approximation of the 15 lb example"
+
+
 def capacity_lb(capacity: float | None, unit: str) -> float | None:
     if capacity is None:
         return None
@@ -107,8 +124,9 @@ def assess_filling(target_weight: float, actual_weight: float, leak_signal: bool
     if target_weight <= 0 or actual_weight < 0:
         raise ValueError("weights must be positive")
     tol = policy.scale_tolerance
-    mav = policy.mav if policy.mav is not None else target_weight * MAV_EXAMPLE[1] / MAV_EXAMPLE[0]
-    checks = [{"check": "net_quantity", "deviation": round(actual_weight - target_weight, 4), "mav": round(mav, 4)}]
+    mav, mav_source = mav_for(target_weight, unit, policy)
+    checks = [{"check": "net_quantity", "deviation": round(actual_weight - target_weight, 4),
+               "mav": round(mav, 4), "mav_source": mav_source}]
     out = {"anomaly": "ok", "severity": "none", "action": "accept", "unit": unit, "checks": checks, "detail": ""}
     if leak_signal:
         out.update(anomaly="leak", severity="critical", action="reject",
