@@ -1,0 +1,232 @@
+{
+ "available": true,
+ "passed": 111,
+ "failed": 0,
+ "percent_covered": 94.62,
+ "num_statements": 1581,
+ "covered_lines": 1496,
+ "missing_lines": 85,
+ "files": [
+  {
+   "path": "app/__init__.py",
+   "percent": 100.0,
+   "stmts": 0,
+   "miss": 0,
+   "covered": 0
+  },
+  {
+   "path": "app/core/__init__.py",
+   "percent": 100.0,
+   "stmts": 0,
+   "miss": 0,
+   "covered": 0
+  },
+  {
+   "path": "app/core/audit.py",
+   "percent": 87.7,
+   "stmts": 81,
+   "miss": 10,
+   "covered": 71
+  },
+  {
+   "path": "app/core/config.py",
+   "percent": 88.9,
+   "stmts": 27,
+   "miss": 3,
+   "covered": 24
+  },
+  {
+   "path": "app/core/db.py",
+   "percent": 96.9,
+   "stmts": 32,
+   "miss": 1,
+   "covered": 31
+  },
+  {
+   "path": "app/core/security.py",
+   "percent": 96.5,
+   "stmts": 57,
+   "miss": 2,
+   "covered": 55
+  },
+  {
+   "path": "app/main.py",
+   "percent": 93.8,
+   "stmts": 32,
+   "miss": 2,
+   "covered": 30
+  },
+  {
+   "path": "app/routers/__init__.py",
+   "percent": 100.0,
+   "stmts": 0,
+   "miss": 0,
+   "covered": 0
+  },
+  {
+   "path": "app/routers/audit_api.py",
+   "percent": 100.0,
+   "stmts": 1,
+   "miss": 0,
+   "covered": 1
+  },
+  {
+   "path": "app/routers/auth.py",
+   "percent": 98.5,
+   "stmts": 66,
+   "miss": 1,
+   "covered": 65
+  },
+  {
+   "path": "app/routers/cylinders.py",
+   "percent": 87.0,
+   "stmts": 92,
+   "miss": 12,
+   "covered": 80
+  },
+  {
+   "path": "app/routers/dashboard_api.py",
+   "percent": 100.0,
+   "stmts": 7,
+   "miss": 0,
+   "covered": 7
+  },
+  {
+   "path": "app/routers/evidence.py",
+   "percent": 95.5,
+   "stmts": 66,
+   "miss": 3,
+   "covered": 63
+  },
+  {
+   "path": "app/routers/fillings.py",
+   "percent": 88.2,
+   "stmts": 68,
+   "miss": 8,
+   "covered": 60
+  },
+  {
+   "path": "app/routers/forecast.py",
+   "percent": 90.9,
+   "stmts": 99,
+   "miss": 9,
+   "covered": 90
+  },
+  {
+   "path": "app/routers/inspections.py",
+   "percent": 95.7,
+   "stmts": 47,
+   "miss": 2,
+   "covered": 45
+  },
+  {
+   "path": "app/routers/seed.py",
+   "percent": 97.6,
+   "stmts": 82,
+   "miss": 2,
+   "covered": 80
+  },
+  {
+   "path": "app/routers/vision_api.py",
+   "percent": 97.1,
+   "stmts": 68,
+   "miss": 2,
+   "covered": 66
+  },
+  {
+   "path": "app/services/__init__.py",
+   "percent": 100.0,
+   "stmts": 0,
+   "miss": 0,
+   "covered": 0
+  },
+  {
+   "path": "app/services/dashboard_data.py",
+   "percent": 90.7,
+   "stmts": 54,
+   "miss": 5,
+   "covered": 49
+  },
+  {
+   "path": "app/services/filling.py",
+   "percent": 98.4,
+   "stmts": 123,
+   "miss": 2,
+   "covered": 121
+  },
+  {
+   "path": "app/services/forecast.py",
+   "percent": 94.8,
+   "stmts": 249,
+   "miss": 13,
+   "covered": 236
+  },
+  {
+   "path": "app/services/lifecycle.py",
+   "percent": 98.1,
+   "stmts": 106,
+   "miss": 2,
+   "covered": 104
+  },
+  {
+   "path": "app/services/synthetic_ops.py",
+   "percent": 100.0,
+   "stmts": 111,
+   "miss": 0,
+   "covered": 111
+  },
+  {
+   "path": "app/services/vision.py",
+   "percent": 94.7,
+   "stmts": 113,
+   "miss": 6,
+   "covered": 107
+  }
+ ],
+ "test_modules": [
+  {
+   "file": "tests/test_auth.py",
+   "tests": 10
+  },
+  {
+   "file": "tests/test_dashboard_data.py",
+   "tests": 2
+  },
+  {
+   "file": "tests/test_defect_fixes.py",
+   "tests": 19
+  },
+  {
+   "file": "tests/test_evidence_audit.py",
+   "tests": 8
+  },
+  {
+   "file": "tests/test_fillings.py",
+   "tests": 8
+  },
+  {
+   "file": "tests/test_forecast.py",
+   "tests": 6
+  },
+  {
+   "file": "tests/test_inspections.py",
+   "tests": 7
+  },
+  {
+   "file": "tests/test_services_filling.py",
+   "tests": 15
+  },
+  {
+   "file": "tests/test_services_forecast.py",
+   "tests": 17
+  },
+  {
+   "file": "tests/test_services_lifecycle.py",
+   "tests": 13
+  },
+  {
+   "file": "tests/test_vision.py",
+   "tests": 6
+  }
+ ]
+}

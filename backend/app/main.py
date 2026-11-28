@@ -10,7 +10,8 @@ from fastapi.responses import FileResponse
 
 from .core.config import PRODUCT_ROOT, PRODUCT_VERSION
 from .core.db import init_db
-from .routers import audit_api, auth, cylinders, evidence, fillings, forecast, inspections, seed, vision_api
+from .routers import (audit_api, auth, cylinders, dashboard_api, evidence, fillings, forecast,
+                    inspections, seed, vision_api)
 
 
 @asynccontextmanager
@@ -25,7 +26,7 @@ def create_app() -> FastAPI:
                   description="LPG Cylinder Intelligent System - rule engines, forecasting, vision, evidence")
     app.add_middleware(audit_api.AuditMiddleware)
     for r in (auth.router, cylinders.router, inspections.router, fillings.router, forecast.router,
-              vision_api.router, evidence.router, evidence.audit_router, seed.router):
+              vision_api.router, evidence.router, evidence.audit_router, seed.router, dashboard_api.router):
         app.include_router(r)
 
     @app.get("/health", tags=["meta"])

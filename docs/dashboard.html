@@ -3,129 +3,370 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>داشبورد LCIS — چهار ماژول نامه پرسی ایران گاز</title>
 <style>
-:root { --ink:#0f2233; --mut:#5a6b7a; --line:#d7e0e8; --acc:#1b6b7a; --ok:#1e7a46; --warn:#a06a00; --bg:#f4f7f9; }
+:root {
+  --ink:#14202b; --mut:#5c6b78; --line:#d5e0e8; --acc:#1b6b7a; --ok:#1e7a46;
+  --warn:#a06a00; --bad:#b42318; --bg:#eef3f6; --card:#fff;
+  --c-pass:#1e7a46; --c-review:#c4841d; --c-reject:#b42318;
+  --c-service:#1b6b7a; --c-due:#c4841d; --c-over:#b45309; --c-susp:#b42318; --c-ret:#5c6b78;
+  --c-short:#c4841d; --c-overfill:#b45309; --c-leak:#b42318; --c-hist:#1b6b7a; --c-fut:#a06a00;
+}
 * { box-sizing:border-box; }
-body { margin:0; font-family:Tahoma, Vazirmatn, sans-serif; color:var(--ink); background:var(--bg); }
-main { max-width:1100px; margin:0 auto; padding:clamp(12px, 3vw, 32px); }
-h1 { font-size:clamp(1.3rem, 4.5vw, 2rem); margin:.2em 0; }
-.sub { color:var(--mut); font-size:clamp(.8rem, 2.5vw, .95rem); margin-bottom:1em; line-height:1.8; }
-.idx { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap:10px; margin-bottom:16px; }
-.idx a { display:block; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 12px; color:inherit; text-decoration:none; }
-.idx a:hover { border-color:var(--acc); }
-.idx b { display:block; color:var(--acc); font-size:.78rem; margin-bottom:.25em; }
-.idx span { font-size:.88rem; line-height:1.55; }
-.grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap:14px; }
-.card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
-.card h2 { margin:.15em 0 .35em; font-size:clamp(1rem, 3vw, 1.2rem); line-height:1.55; }
-.kicker { color:var(--acc); font-size:.78rem; font-weight:bold; }
-.badge { display:inline-block; padding:.25em .8em; border-radius:99px; color:#fff; font-weight:bold; margin:.35em 0 .6em; }
+body { margin:0; font-family:Tahoma, "Segoe UI", sans-serif; color:var(--ink); background:var(--bg); }
+main { max-width:1180px; margin:0 auto; padding:clamp(12px, 3vw, 28px); }
+h1 { font-size:clamp(1.35rem, 4vw, 1.9rem); margin:.15em 0; }
+h2 { font-size:clamp(1.05rem, 2.6vw, 1.35rem); margin:.15em 0 .25em; line-height:1.45; }
+h3 { font-size:.92rem; margin:.2em 0 .55em; }
+.sub, .note { color:var(--mut); font-size:.8rem; line-height:1.7; }
+.tabs { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; position:sticky; top:0; z-index:3;
+  background:linear-gradient(var(--bg) 70%, transparent); padding:8px 0 12px; }
+.tabs button { border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:999px; padding:.5em 1.05em; font:inherit; cursor:pointer; }
+.tabs button[aria-selected="true"] { background:var(--acc); color:#fff; border-color:var(--acc); }
+.panel { display:none; }
+.panel.active { display:block; }
+.banner { background:#fff8e8; border:1px solid #ead7a2; border-radius:14px; padding:10px 14px; margin-bottom:14px; font-size:.82rem; line-height:1.75; }
+.jumps { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:10px; margin-bottom:16px; }
+.jumps a { background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px 14px; color:inherit; text-decoration:none; border-top:4px solid var(--stripe, var(--acc)); min-height:96px; }
+.jumps a:hover { border-color:var(--stripe, var(--acc)); }
+.jumps strong { display:block; margin:.2em 0; font-size:.95rem; }
+.jumps em { display:block; font-style:normal; color:var(--mut); font-size:.78rem; }
+.j1 { --stripe:#1b6b7a; } .j2 { --stripe:#2457a6; } .j3 { --stripe:#a06a00; } .j4 { --stripe:#1e7a46; }
+.mod { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:16px 16px 14px; margin:0 0 16px; scroll-margin-top:72px; border-right:6px solid var(--stripe); }
+.m1 { --stripe:#1b6b7a; } .m2 { --stripe:#2457a6; } .m3 { --stripe:#a06a00; } .m4 { --stripe:#1e7a46; }
+.mod-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap; margin-bottom:12px; }
+.kicker { color:var(--stripe, var(--acc)); font-size:.75rem; font-weight:bold; }
+.kpis { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:8px; margin-bottom:14px; }
+.kpi { background:#f6fafb; border:1px solid var(--line); border-radius:12px; padding:8px 10px; }
+.kpi b { display:block; font-size:1.25rem; line-height:1.2; }
+.kpi span { color:var(--mut); font-size:.75rem; }
+.kpi.alert b { color:var(--bad); }
+.charts { display:grid; grid-template-columns:minmax(240px, .9fr) minmax(260px, 1.2fr); gap:14px; align-items:start; }
+.charts + .charts, .block { margin-top:14px; }
+.pane { background:#f8fbfc; border:1px solid var(--line); border-radius:14px; padding:12px; }
+.donut { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+.donut svg { width:158px; height:158px; flex:0 0 auto; }
+.donut-n { font-size:22px; font-weight:bold; fill:var(--ink); font-family:Tahoma, sans-serif; }
+.donut-l { font-size:11px; fill:var(--mut); font-family:Tahoma, sans-serif; }
+.legend { list-style:none; margin:0; padding:0; flex:1; min-width:140px; }
+.legend li { display:grid; grid-template-columns:12px 1fr auto auto; gap:6px; align-items:center; font-size:.8rem; padding:.22em 0; }
+.legend i { width:12px; height:12px; border-radius:3px; display:block; }
+.legend em { color:var(--mut); font-style:normal; min-width:2.6em; text-align:left; }
+.chart { width:100%; height:auto; display:block; }
+.ax, .ay { font-size:11px; fill:var(--mut); font-family:Tahoma, sans-serif; }
+.stack-row, .bar { display:flex; align-items:center; gap:8px; margin:.35em 0; font-size:.8rem; }
+.stack-name, .bar span.name { min-width:6.2em; }
+.track, .stack-track { flex:1; display:flex; height:12px; background:#e7eef2; border-radius:99px; overflow:hidden; }
+.stack-track i, .bar i { display:block; height:100%; }
+.bar i { border-radius:99px; background:var(--acc); }
+.flag { display:inline-block; background:#fde8e6; color:var(--bad); border-radius:99px; padding:.05em .55em; font-size:.72rem; font-weight:bold; }
+.okflag { display:inline-block; color:var(--ok); font-size:.72rem; }
+.seg { display:flex; flex-wrap:wrap; gap:6px; margin:0 0 8px; }
+.seg button { border:1px solid var(--line); background:#fff; border-radius:999px; padding:.35em .8em; font:inherit; cursor:pointer; }
+.seg button[aria-pressed="true"] { background:var(--stripe, var(--acc)); color:#fff; border-color:transparent; }
+.actions { display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:8px; }
+.actions article { border:1px solid var(--line); border-radius:12px; padding:10px; background:#fff; }
+.actions b { font-size:1.05rem; }
+.actions p { margin:.25em 0; font-size:.78rem; }
+details { margin-top:10px; }
+summary { cursor:pointer; color:var(--acc); font-size:.82rem; }
+.card, .sens { background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 16px; overflow-x:auto; }
+.sens { margin-top:14px; }
+.badge { display:inline-block; padding:.2em .7em; border-radius:99px; color:#fff; font-weight:bold; font-size:.8rem; }
 .badge.pass { background:var(--ok); } .badge.warn { background:var(--warn); }
 table { width:100%; border-collapse:collapse; font-size:.82rem; }
-th, td { border-bottom:1px solid var(--line); padding:.35em .5em; text-align:right; }
+th, td { border-bottom:1px solid var(--line); padding:.4em .5em; text-align:right; white-space:nowrap; }
 th { color:var(--acc); }
-.note { color:var(--mut); font-size:.78rem; line-height:1.75; margin:.55em 0 0; }
-.lead { font-size:.86rem; line-height:1.75; margin:.2em 0 .4em; }
-.sens { margin-top:16px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
-.sens h2, .sens h3 { margin:.1em 0 .5em; font-size:clamp(.95rem, 3vw, 1.1rem); }
 footer { color:var(--mut); font-size:.75rem; margin-top:18px; line-height:1.8; }
-@media (max-width:640px) { th, td { padding:.3em .35em; } }
+.err { color:#8a1f1f; }
+.legend-row { display:flex; flex-wrap:wrap; gap:10px 14px; margin:0 0 8px; font-size:.75rem; color:var(--mut); }
+.legend-row i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-left:4px; vertical-align:-1px; }
+@media (max-width: 900px) {
+  .jumps, .kpis, .actions { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .charts { grid-template-columns:1fr; }
+}
+@media (max-width: 560px) {
+  .jumps, .kpis, .actions { grid-template-columns:1fr; }
+}
 </style></head><body><main>
 <h1>داشبورد LCIS</h1>
-<div class="sub">سامانهٔ هوشمند بازرسی، ردیابی و مدیریت چرخهٔ عمر کپسول‌های گاز مایع — پتروپالاتوس برای پرسی ایران گاز.
-چهار ماژول زیر همان ترتیب نامهٔ اعلام آمادگی است. عددها از اعتبارسنجی قابل بازتولید (run_validation.py) و آزمون همین نسخه (lcis-trl5-0.5.0) آمده‌اند.</div>
-
-<nav class="idx" aria-label="ماژول‌های نامه">
-  <a href="#m1"><b>ماژول ۱</b><span>بازرسی خودکار ظاهری کپسول‌ها</span></a>
-  <a href="#m2"><b>ماژول ۲</b><span>پروندهٔ دیجیتال و پیش‌بینی چرخهٔ عمر</span></a>
-  <a href="#m3"><b>ماژول ۳</b><span>کنترل پر کردن، کم‌پری و نشتی</span></a>
-  <a href="#m4"><b>ماژول ۴</b><span>پیش‌بینی تقاضا و توزیع و برگشت</span></a>
-</nav>
-
-<div class="grid">
-  <article class="card" id="m1">
-    <div class="kicker">۱-۱ · ماژول اول</div>
-    <h2>ماژول هوشمند بازرسی خودکار ظاهری کپسول‌ها</h2>
-    <p class="lead">زنگ‌زدگی، فرورفتگی، ترک و آسیب شیر در خط پرسرعت از دید اپراتور پنهان می‌ماند. دستیار بینایی، عکس را به حکم pass / review / reject نگاشت می‌کند و کپسول مشکوک را برای بررسی انسانی نگه می‌دارد.</p>
-    <div class="badge warn">TRL 4 · دستیار، نه بازرس مجاز</div>
-    <table><tr><th>سنجه</th><th>مقدار</th></tr>
-    <tr><td>دقت آزمون</td><td>۷۸.۲۶٪</td></tr>
-    <tr><td>خلوص حکم pass</td><td>۹۱.۶۷٪</td></tr>
-    <tr><td>آستانهٔ pass</td><td>۰.۹۵</td></tr>
-    <tr><td>حکم‌ها (آزمون)</td><td>pass ۱۲ / review ۱۱ / reject ۰</td></tr>
-    <tr><td>تصاویر تأییدشده</td><td>۷۵</td></tr>
-    </table>
-    <p class="note">کلاس‌های تأییدشده: ok ۴۸، rust ۲۵، crack ۲. برچسب و حلقه در قواعد بازرسی هستند؛ مدل تصویری هنوز روی آن‌ها سنجیده نشده و تأیید انسانی برچسب‌ها مانده است.</p>
-  </article>
-
-  <article class="card" id="m2">
-    <div class="kicker">۱-۲ · ماژول دوم</div>
-    <h2>ماژول هوشمند پروندهٔ دیجیتال و پیش‌بینی چرخهٔ عمر کپسول</h2>
-    <p class="lead">هر کپسول شناسه، سوابق بازرسی، شمار پر شدن و رد شدن، و تاریخ آزمون دارد. زمان آزمون بعدی و وضعیت خدمت (در سرویس، سررسید، تعلیق، خروج) از قاعدهٔ ۴۹ CFR 180.209 حساب می‌شود، نه از میانگین ناوگان.</p>
-    <div class="badge pass">چرخهٔ عمر ۱۵ از ۱۵</div>
-    <table><tr><th>سنجه</th><th>مقدار</th></tr>
-    <tr><td>آزمون مرزی چرخهٔ عمر</td><td>۱۵ / ۱۵</td></tr>
-    <tr><td>فاصلهٔ آزمون دوره‌ای</td><td>۵ سال (قابل تمدید ۱۰ یا ۱۲)</td></tr>
-    <tr><td>افت تارِ نیازمند بازتأیید</td><td>۵٪ یا بیشتر</td></tr>
-    <tr><td>بازگشت به سرویس</td><td>فقط پس از بازتأیید ثبت‌شده</td></tr>
-    </table>
-    <p class="note">شاخص اولویت، ابزار صف بازرسی است و با آمار خرابی واقعی کالیبره نشده. پروندهٔ دیجیتال روی API ثبت، خوانده و در ردپای حسابرسی نگه داشته می‌شود.</p>
-  </article>
-
-  <article class="card" id="m3">
-    <div class="kicker">۱-۳ · ماژول سوم</div>
-    <h2>ماژول هوشمند کنترل پر کردن، تشخیص کم‌پری و نشتی</h2>
-    <p class="lead">وزن هدف و واقعی، ظرفیت مجاز و سیگنال نشت هر ایستگاه ثبت می‌شود. کم‌پری، پرپری و نشتی پیش از رهاسازی کپسول تشخیص داده می‌شوند و کپسول ردشده تا بازتأیید دوباره پر نمی‌شود.</p>
-    <div class="badge pass">پرکنندگی ۲۹ از ۲۹</div>
-    <table><tr><th>موتور</th><th>آزمون</th><th>پاس</th></tr>
-    <tr><td>پرکنندگی (کم‌پری، پرپری، نشتی، تار)</td><td>۲۹</td><td>۲۹</td></tr>
-    <tr><td>پذیرش لات</td><td>۶</td><td>۶</td></tr>
-    </table>
-    <p class="note">بازپخش آمار NIST: لات‌های پذیرفته ۷۴.۷۷٪ در برابر منتشرشده ۷۴.۲۰٪. MAV منتشرشده برای باند ۱۴٫۳ تا ۱۷٫۷ پوند برابر ۰٫۲۸ پوند است.</p>
-  </article>
-
-  <article class="card" id="m4">
-    <div class="kicker">۱-۴ · ماژول چهارم</div>
-    <h2>ماژول هوشمند پیش‌بینی تقاضا و بهینه‌سازی توزیع و برگشت کپسول‌ها</h2>
-    <p class="lead">تقاضای ناحیه‌ای از سری تاریخی برآورد می‌شود تا برنامهٔ تولید، حمل و برگشت به کمبود و انباشت کمتر برسد. تا رسیدن دادهٔ فروش روزانهٔ ایستگاه‌های ایران، خروجی عمومی هفتگی ملی و ماهانهٔ منطقه‌ای است و روی پاسخ نوشته می‌شود.</p>
-    <div class="badge pass">مهارت +۰.۴۶</div>
-    <p class="note">CI ۹۵٪: ۰.۳۳ تا ۰.۵۵ | پوشش ۸۰٪ یک‌گام: ۰.۸۱ | سیاست انتخاب = بهترین روش بازآزمون</p>
-    <table><tr><th>روش</th><th>RMSE</th><th>MAPE</th><th>مهارت</th></tr>
-    <tr><td>ridge</td><td>۲۶۲.۴</td><td>۲۵.۴۹٪</td><td>+۰.۴۶</td></tr>
-    <tr><td>gbm</td><td>۲۶۳.۸</td><td>۲۴.۷۹٪</td><td>+۰.۴۵</td></tr>
-    <tr><td>ensemble_seasonal_ridge</td><td>۳۰۲.۷</td><td>۲۸.۳۶٪</td><td>+۰.۲۸</td></tr>
-    <tr><td>moving_average_14d</td><td>۳۵۵.۵</td><td>۳۲.۴۶٪</td><td>+۰.۰۰</td></tr>
-    </table>
-    <p class="note">۱۰ سری منطقه‌ای: ridge در ۸ سری از ۱۰ بهترین است و میانگین فاصله از بهترین هر سری ۰.۰۸٪. انتخاب خودکار با تلورانس ۵٪ در ۸ سری از ۱۱ با بهترین برابر است (میانگین نقص ۳.۱۹٪).</p>
-  </article>
+<p class="sub">سامانهٔ هوشمند بازرسی، ردیابی و مدیریت چرخهٔ عمر کپسول‌های گاز مایع — پتروپالاتوس برای پرسی ایران گاز. هر ماژول جدا چیده شده و نمودارها تصویر همین تاریخ را نشان می‌دهند.</p>
+<div class="tabs" role="tablist">
+  <button type="button" role="tab" id="tab-modules" aria-selected="true" aria-controls="panel-modules">ماژول‌ها</button>
+  <button type="button" role="tab" id="tab-tech" aria-selected="false" aria-controls="panel-tech">تکنولوژی‌های به‌کاررفته</button>
+  <button type="button" role="tab" id="tab-tests" aria-selected="false" aria-controls="panel-tests">آزمون‌ها و پوشش</button>
 </div>
+<p id="status" class="sub">در حال خواندن داده…</p>
+<div id="panel-modules" class="panel active" role="tabpanel"></div>
+<div id="panel-tech" class="panel" role="tabpanel"></div>
+<div id="panel-tests" class="panel" role="tabpanel"></div>
+<footer id="foot"></footer>
+</main>
+<script>
+const fa = (n, d=0) => Number(n).toLocaleString("fa-IR", {maximumFractionDigits: d, minimumFractionDigits: d});
+const pct = (n, d) => d ? fa(100 * n / d, 0) : "۰";
+const COLOR = {
+  pass:"#1e7a46", review:"#c4841d", reject:"#b42318",
+  in_service:"#1b6b7a", due_for_test:"#c4841d", overdue_for_test:"#b45309", suspend:"#b42318", retire:"#5c6b78",
+  ok:"#1e7a46", short_fill:"#c4841d", overfill:"#b45309", leak:"#b42318",
+  tare_loss:"#7a1f4b", tare_out_of_tolerance:"#5c6b78",
+  high:"#b42318", medium:"#c4841d", low:"#1b6b7a"
+};
+const tabs = document.querySelectorAll(".tabs button");
+tabs.forEach(btn => btn.addEventListener("click", () => {
+  tabs.forEach(b => b.setAttribute("aria-selected", b === btn ? "true" : "false"));
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  document.getElementById(btn.getAttribute("aria-controls")).classList.add("active");
+}));
 
-<div class="sens">
-  <h3>ماژول ۴ · حساسیت به طول تاریخچه (سری هفتگی ملی، ۵۲ مبدأ)</h3>
-  <table><tr><th>تاریخچه (هفته)</th><th>ridge</th><th>ترکیب فصلی+ریج</th><th>MVP میانگین ۱۴</th></tr>
-  <tr><td>۱۲۰</td><td>۲۸۱.۸</td><td>۱۸۰.۴</td><td>۲۸۱.۸</td></tr>
-  <tr><td>۲۰۰</td><td>۱۷۲.۷</td><td>۱۳۹.۲</td><td>۲۸۵.۳</td></tr>
-  <tr><td>۳۰۰</td><td>۱۵۴.۹</td><td>۱۵۳.۵</td><td>۲۸۳.۱</td></tr>
-  <tr><td>۵۰۰</td><td>۱۵۸.۸</td><td>۱۵۸.۳</td><td>۲۵۳.۰</td></tr>
-  <tr><td>۸۰۰</td><td>۲۳۵.۲</td><td>۲۶۷.۹</td><td>۳۹۵.۳</td></tr>
-  <tr><td>۱۱۸۰</td><td>۲۳۱.۵</td><td>۲۹۶.۶</td><td>۳۱۵.۶</td></tr>
-  </table>
-  <p class="note">قاعدهٔ انتخاب بر حسب فصل کامل: کمتر از ۱۱ فصل ← ترکیب فصلی و ریج؛ از ۱۱ فصل ← ridge به‌تنهایی.</p>
-</div>
+function donut(parts, caption) {
+  const rows = parts.filter(p => p.n > 0);
+  const total = rows.reduce((s, p) => s + p.n, 0) || 1;
+  const r = 54, c = 2 * Math.PI * r;
+  let off = 0;
+  const arcs = rows.map(p => {
+    const len = c * p.n / total;
+    const el = `<circle cx="80" cy="80" r="${r}" fill="none" stroke="${p.color}" stroke-width="16"
+      stroke-dasharray="${len.toFixed(2)} ${(c - len).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}"
+      transform="rotate(-90 80 80)"><title>${p.label}: ${p.n}</title></circle>`;
+    off += len;
+    return el;
+  }).join("");
+  const legend = rows.map(p => `<li><i style="background:${p.color}"></i><span>${p.label}</span><b>${fa(p.n)}</b><em>${pct(p.n, total)}٪</em></li>`).join("");
+  return `<div class="donut"><svg viewBox="0 0 160 160" role="img" aria-label="${caption}">
+    ${arcs}<text x="80" y="76" text-anchor="middle" class="donut-n">${fa(total)}</text>
+    <text x="80" y="96" text-anchor="middle" class="donut-l">${caption}</text></svg><ul class="legend">${legend}</ul></div>`;
+}
 
-<div class="sens" id="platform">
-  <h2>بستر واحد چهار ماژول</h2>
-  <div class="badge pass">۱۰۹ آزمون پاس</div>
-  <table><tr><th>سنجه</th><th>مقدار</th></tr>
-  <tr><td>پوشش کد (NFR-06 ≥ ۸۵٪)</td><td>۹۴٪</td></tr>
-  <tr><td>NFR-01 (پاسخ با ۱۰۰۰ رکورد)</td><td>&lt; ۵۰۰ms</td></tr>
-  <tr><td>نقش‌ها / حسابرسی</td><td>۶ نقش / هر درخواست در زنجیرهٔ هش ثبت می‌شود</td></tr>
-  <tr><td>Docker / CI</td><td>آماده / pytest در هر push</td></tr>
-  </table>
-  <p class="note">نامه این چهار ماژول را در یک بستر می‌خواهد: بازرسی ظاهری، پرونده و چرخهٔ عمر، کنترل پر کردن، و پیش‌بینی توزیع. همان مسیرها روی API این نسخه در دسترس‌اند.</p>
-  <p class="note">اصلاح ۲۶ نوامبر: کلید توکن داخل ایمیج نیست؛ چرخهٔ عمر بدون تاریخ آزمون خطای ۵۰۰ نمی‌دهد؛ کپسول ردشده تا بازتأیید پر نمی‌شود؛ رمز فقط در بدنهٔ درخواست است. هنوز باز: تأیید انسانی برچسب بینایی، دسترسی سطری منطقه‌ای، کالیبراسیون پوشش چندگامی، و جدول کامل MAV بیرون باند نقل‌شدهٔ NIST.</p>
-</div>
+function columns(rows, keys, colorOf, labelOf) {
+  const W = 520, H = 210, padL = 36, padR = 10, padT = 12, padB = 26;
+  const max = Math.max(1, ...rows.map(r => keys.reduce((s, k) => s + (Number(r[k]) || 0), 0)));
+  const iw = W - padL - padR, ih = H - padT - padB, slot = iw / rows.length, bw = slot * 0.62;
+  let body = "";
+  rows.forEach((r, i) => {
+    let y = padT + ih;
+    const x = padL + i * slot + (slot - bw) / 2;
+    keys.forEach(k => {
+      const h = ((Number(r[k]) || 0) / max) * ih;
+      if (h < 0.4) return;
+      y -= h;
+      body += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" fill="${colorOf(k)}"><title>${labelOf(k)} ${r[k]}</title></rect>`;
+    });
+    body += `<text class="ax" x="${(x + bw / 2).toFixed(1)}" y="${H - 8}" text-anchor="middle">${r.tick}</text>`;
+  });
+  body += `<text class="ay" x="4" y="${padT + 8}">${fa(max)}</text><text class="ay" x="4" y="${padT + ih}">۰</text>`;
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img">${body}</svg>`;
+}
 
-<footer>شواهد: validation/results/*.json و نمودارهای validation/figures/ — گزارش TRL در LCIS_TRL_Report.pdf |
-منابع با هش SHA-256 در data/sources.json | تصاویر وب بازنشر نمی‌شوند؛ فقط برچسب و مانیفست.
-جانمایی ماژول‌ها مطابق نامهٔ اعلام آمادگی به شرکت پرسی ایران گاز (هلدینگ شستا).</footer>
-</main></body></html>
+function lineChart(history, forecast) {
+  const fut = forecast.map(f => f.demand);
+  const join = history.concat(fut);
+  const lo = Math.min(...join), hi = Math.max(...join);
+  const span = hi - lo || 1;
+  const W = 640, H = 200, padL = 46, padR = 12, padT = 16, padB = 24;
+  const iw = W - padL - padR, ih = H - padT - padB;
+  const n = join.length;
+  const X = i => padL + (n <= 1 ? 0 : (i / (n - 1)) * iw);
+  const Y = v => padT + (1 - (v - lo) / span) * ih;
+  const dLine = (arr, start) => arr.map((v, i) => `${i ? "L" : "M"}${X(start + i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+  const histD = dLine(history, 0);
+  const futD = dLine([history[history.length - 1], ...fut], history.length - 1);
+  const area = `${histD} L${X(history.length - 1).toFixed(1)},${(padT + ih).toFixed(1)} L${X(0).toFixed(1)},${(padT + ih).toFixed(1)} Z`;
+  const xSplit = X(history.length - 1);
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="تاریخچه و پیش‌بینی تقاضا">
+    <line x1="${padL}" y1="${padT + ih}" x2="${W - padR}" y2="${padT + ih}" stroke="#d5e0e8"/>
+    <line x1="${xSplit.toFixed(1)}" y1="${padT}" x2="${xSplit.toFixed(1)}" y2="${(padT + ih).toFixed(1)}" stroke="#d5e0e8" stroke-dasharray="3 3"/>
+    <path d="${area}" fill="#1b6b7a" opacity=".12"></path>
+    <path d="${histD}" fill="none" stroke="#1b6b7a" stroke-width="2.4"></path>
+    <path d="${futD}" fill="none" stroke="#a06a00" stroke-width="2.4" stroke-dasharray="6 4"></path>
+    <text class="ay" x="4" y="${padT + 8}">${fa(hi, 0)}</text>
+    <text class="ay" x="4" y="${padT + ih}">${fa(lo, 0)}</text>
+    <text class="ax" x="${padL}" y="${H - 6}">۱۴ روز</text>
+    <text class="ax" x="${xSplit.toFixed(1)}" y="${H - 6}" text-anchor="middle">امروز</text>
+    <text class="ax" x="${W - padR}" y="${H - 6}" text-anchor="end">۷ روز بعد</text>
+  </svg>`;
+}
+
+function stackRows(rows, keys) {
+  return rows.map(r => {
+    const total = keys.reduce((s, k) => s + (Number(r[k.code]) || 0), 0) || 1;
+    const bits = keys.map(k => {
+      const n = Number(r[k.code]) || 0;
+      if (!n) return "";
+      return `<i style="width:${(100 * n / total).toFixed(1)}%;background:${k.color}" title="${k.label} ${n}"></i>`;
+    }).join("");
+    return `<div class="stack-row"><span class="stack-name">${r.label}</span><span class="stack-track">${bits}</span><b>${fa(total === 1 && !keys.some(k => r[k.code]) ? 0 : keys.reduce((s, k) => s + (Number(r[k.code]) || 0), 0))}</b></div>`;
+  }).join("");
+}
+
+function legendRow(keys) {
+  return `<div class="legend-row">${keys.map(k => `<span><i style="background:${k.color}"></i>${k.label}</span>`).join("")}</div>`;
+}
+
+function table(headers, rows) {
+  return `<table><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr>${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</table>`;
+}
+function bars(items, key="n", digits=0) {
+  const max = Math.max(1, ...items.map(x => x[key]));
+  return items.map(x => `<div class="bar"><span class="name">${x.label || x.region || x.station || x.code}</span><span class="track"><i style="width:${Math.round(100 * x[key] / max)}%;background:var(--acc)"></i></span><b>${fa(x[key], digits)}</b></div>`).join("");
+}
+function find(list, code) { return (list.find(x => x.code === code) || {}).n || 0; }
+
+function modules(ops) {
+  const ins = ops.inspection, life = ops.lifecycle, fill = ops.filling, dist = ops.distribution;
+  const today = ins.daily[ins.daily.length - 1];
+  const vKeys = [
+    {code:"pass", label:"قبول", color:COLOR.pass},
+    {code:"review", label:"بازبینی", color:COLOR.review},
+    {code:"reject", label:"رد", color:COLOR.reject}
+  ];
+  const dayRows = ins.daily.map(d => ({...d, tick: fa(Number(d.date.slice(8)))}));
+  const statusKeys = life.status_keys.filter(k => life.by_region.some(r => (r[k.code] || 0) > 0))
+    .map(k => ({...k, color: COLOR[k.code] || "#5c6b78"}));
+  const aKeys = fill.by_anomaly.map(a => ({code:a.code, label:a.label, color: COLOR[a.code] || "#5c6b78"}));
+  const priMax = Math.max(...life.by_priority.map(p => p.n), 1);
+  const views = dist.regions.map((r, i) => `<div data-view="${r.region}" ${i ? "hidden" : ""}>
+      ${lineChart(r.history, r.forecast)}
+      <p class="note">آخرین روز <b>${fa(r.history[r.history.length - 1], 0)}</b> · فردا <b>${fa(r.forecast[0].demand, 0)}</b> ${dist.unit} · مدل ${r.model}</p>
+    </div>`).join("");
+  document.getElementById("panel-modules").innerHTML = `
+    <div class="banner">حجم‌ها مصنوعی‌اند (بذر <bdi>${ops.seed}</bdi>، تا <bdi>${ops.as_of}</bdi>) و با موتور خود محصول طبقه‌بندی شده‌اند. نمودار هر بخش همین تصویر را نشان می‌دهد. دقت مدل‌ها در تب تکنولوژی است.</div>
+    <nav class="jumps">
+      <a class="j1" href="#m1"><span class="kicker">ماژول ۱</span><strong>بازرسی ظاهری</strong><em>${fa(find(ins.by_verdict,"reject"))} رد در ${fa(ins.days)} روز</em></a>
+      <a class="j2" href="#m2"><span class="kicker">ماژول ۲</span><strong>چرخهٔ عمر</strong><em>${fa(find(life.by_status,"overdue_for_test"))} آزمون معوق</em></a>
+      <a class="j3" href="#m3"><span class="kicker">ماژول ۳</span><strong>کنترل پر کردن</strong><em>${fa(fill.stations.filter(s => s.needs_calibration).length)} ایستگاه نیازمند کالیبراسیون</em></a>
+      <a class="j4" href="#m4"><span class="kicker">ماژول ۴</span><strong>تقاضا و توزیع</strong><em>افق ${fa(dist.horizon_days)} روز · ${dist.unit}</em></a>
+    </nav>
+
+    <section class="mod m1" id="m1">
+      <div class="mod-head">
+        <div><div class="kicker">۱-۱ · ماژول هوشمند بازرسی خودکار ظاهری</div><h2>بازرسی کپسول‌ها</h2>
+        <p class="note">حکم قبول، بازبینی و رد در هفت روز اخیر، به تفکیک روز و منطقه.</p></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><b>${fa(ins.n)}</b><span>بازرسی در ${fa(ins.days)} روز</span></div>
+        <div class="kpi"><b>${fa(find(ins.by_verdict,"pass"))}</b><span>قبول</span></div>
+        <div class="kpi"><b>${fa(find(ins.by_verdict,"review"))}</b><span>بازبینی</span></div>
+        <div class="kpi alert"><b>${fa(find(ins.by_verdict,"reject"))}</b><span>رد</span></div>
+      </div>
+      <div class="charts">
+        <div class="pane"><h3>ترکیب حکم‌ها</h3>${donut(ins.by_verdict.map(v => ({...v, color:COLOR[v.code]})), "بازرسی")}</div>
+        <div class="pane"><h3>روند روزانه</h3>${legendRow(vKeys)}${columns(dayRows, ["pass","review","reject"], k => COLOR[k], k => vKeys.find(x => x.code===k).label)}</div>
+      </div>
+      <div class="charts">
+        <div class="pane"><h3>عیب‌های دیده‌شده</h3>${bars(ins.by_defect)}</div>
+        <div class="pane"><h3>حکم به تفکیک منطقه</h3>${legendRow(vKeys)}${stackRows(ins.by_region.map(r => ({...r, label:r.region})), vKeys)}</div>
+      </div>
+      <p class="note">امروز <bdi>${today.date}</bdi>: قبول ${fa(today.pass)} · بازبینی ${fa(today.review)} · رد ${fa(today.reject)}.</p>
+    </section>
+
+    <section class="mod m2" id="m2">
+      <div class="mod-head">
+        <div><div class="kicker">۱-۲ · پروندهٔ دیجیتال و پیش‌بینی چرخهٔ عمر</div><h2>ناوگان کپسول‌ها</h2>
+        <p class="note">وضعیت آزمون دوره‌ای و اولویت صف، روی همان قاعدهٔ ۴۹ CFR ۱۸۰٫۲۰۹.</p></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><b>${fa(life.n)}</b><span>کپسول در پرونده</span></div>
+        <div class="kpi"><b>${fa(find(life.by_status,"in_service"))}</b><span>در سرویس</span></div>
+        <div class="kpi alert"><b>${fa(find(life.by_status,"overdue_for_test"))}</b><span>آزمون معوق</span></div>
+        <div class="kpi"><b>${fa(find(life.by_status,"suspend"))}</b><span>تعلیق</span></div>
+      </div>
+      <div class="charts">
+        <div class="pane"><h3>وضعیت ناوگان</h3>${donut(life.by_status.map(s => ({...s, color:COLOR[s.code] || "#5c6b78"})), "کپسول")}</div>
+        <div class="pane"><h3>اولویت صف</h3>
+          ${life.by_priority.map(p => `<div class="bar"><span class="name">${p.label}</span><span class="track"><i style="width:${Math.round(100 * p.n / priMax)}%;background:${COLOR[p.code]}"></i></span><b>${fa(p.n)}</b></div>`).join("")}
+          <p class="note">اولویت بالا همان‌هایی است که آزمونشان معوق است یا باید از چرخه خارج شوند.</p>
+        </div>
+      </div>
+      <div class="block pane"><h3>ترکیب وضعیت در هر منطقه</h3>${legendRow(statusKeys)}${stackRows(life.by_region.map(r => ({...r, label:r.region})), statusKeys)}</div>
+    </section>
+
+    <section class="mod m3" id="m3">
+      <div class="mod-head">
+        <div><div class="kicker">۱-۳ · کنترل پر کردن، کم‌پری و نشتی</div><h2>پر کردن در ایستگاه‌ها</h2>
+        <p class="note">هدف ${fa(fill.target_lb)} پوند. پر کردن سالم زیر ظرفیت نامی و داخل MAV می‌ماند.</p></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><b>${fa(fill.n)}</b><span>پر کردن</span></div>
+        <div class="kpi"><b>${fa(find(fill.by_anomaly,"ok"))}</b><span>سالم</span></div>
+        <div class="kpi"><b>${fa(find(fill.by_anomaly,"short_fill"))}</b><span>کم‌پری</span></div>
+        <div class="kpi alert"><b>${fa(find(fill.by_anomaly,"leak") + find(fill.by_anomaly,"overfill"))}</b><span>نشتی یا پرپری</span></div>
+      </div>
+      <div class="charts">
+        <div class="pane"><h3>نتیجهٔ پر کردن</h3>${donut(fill.by_anomaly.map(a => ({...a, color:COLOR[a.code] || "#5c6b78"})), "پر کردن")}</div>
+        <div class="pane"><h3>ترکیب هر ایستگاه</h3>${legendRow(aKeys)}
+          ${fill.stations.map(s => {
+            const bits = aKeys.map(k => {
+              const n = Number(s[k.code]) || 0;
+              return n ? `<i style="width:${(100 * n / s.n).toFixed(1)}%;background:${k.color}" title="${k.label} ${n}"></i>` : "";
+            }).join("");
+            const mark = s.needs_calibration ? `<span class="flag">کالیبراسیون</span>` : `<span class="okflag">عادی</span>`;
+            return `<div class="stack-row"><span class="stack-name">${s.station.replace("ST-","")}</span><span class="stack-track">${bits}</span>${mark}</div>`;
+          }).join("")}
+          <p class="note">علامت کالیبراسیون یعنی سهم کم‌پری ۱۲٪ یا بیشتر است. این آستانه فقط برای نمایش دمو است.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mod m4" id="m4">
+      <div class="mod-head">
+        <div><div class="kicker">۱-۴ · پیش‌بینی تقاضا و بهینه‌سازی توزیع</div><h2>تقاضا، اعزام و برگشت</h2>
+        <p class="note">خط ممتد ۱۴ روز گذشته است و خط‌چین، مسیر ۷ روز آیندهٔ همان موتور پیش‌بینی.</p></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><b>${fa(dist.regions.reduce((s, r) => s + r.forecast[0].demand, 0), 0)}</b><span>جمع تقاضای فردا</span></div>
+        <div class="kpi"><b>${fa(dist.regions.reduce((s, r) => s + r.ship_full, 0))}</b><span>جمع اعزام پر</span></div>
+        <div class="kpi"><b>${fa(dist.regions.reduce((s, r) => s + r.collect_empty, 0))}</b><span>جمع برگشت خالی</span></div>
+        <div class="kpi"><b>${fa(dist.regions.length)}</b><span>منطقه · مدل ${dist.regions[0].model}</span></div>
+      </div>
+      <div class="pane">
+        <h3>مسیر تقاضا</h3>
+        <div class="legend-row"><span><i style="background:#1b6b7a"></i>تاریخچه</span><span><i style="background:#a06a00"></i>پیش‌بینی</span></div>
+        <div class="seg" id="dist-seg">${dist.regions.map((r, i) => `<button type="button" data-region="${r.region}" aria-pressed="${i===0}">${r.region}</button>`).join("")}</div>
+        <div id="dist-views">${views}</div>
+      </div>
+      <div class="block"><h3>اقدام پیشنهادی این تصویر</h3>
+        <div class="actions">${dist.regions.map(r => `<article>
+          <strong>${r.region}</strong>
+          <p>اعزام پر<br><b>${fa(r.ship_full)}</b></p>
+          <p>جمع‌آوری خالی<br><b>${fa(r.collect_empty)}</b></p>
+          <p class="note">موجودی پر ${fa(r.stock_full)} · خالی ${fa(r.stock_empty)}</p>
+        </article>`).join("")}</div>
+        <p class="note">اعزام پر = نیاز هفت‌روزه منهای موجودی پر، اگر مثبت باشد. جمع‌آوری خالی از برگشت تقریبی هفتهٔ قبل منهای موجودی خالی به دست آمده است.</p>
+      </div>
+    </section>`;
+  document.querySelectorAll("#dist-seg button").forEach(btn => btn.addEventListener("click", () => {
+    document.querySelectorAll("#dist-seg button").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+    document.querySelectorAll("#dist-views [data-view]").forEach(v => { v.hidden = v.dataset.view !== btn.dataset.region; });
+  }));
+}
+
+function technologies(rows) {
+  document.getElementById("panel-tech").innerHTML = `
+    <div class="banner">این دقت‌ها از فایل‌های validation/results خوانده شده‌اند (دادهٔ واقعی عمومی EIA و NIST، و مجموعهٔ تصاویر تأییدشده). با دادهٔ مصنوعی تب ماژول‌ها حساب نشده‌اند.</div>
+    <div class="card">${table(["ماژول","تکنولوژی","سنجه","مقدار","شرح"],
+      rows.map(r => [r.module, r.name, r.metric, r.value, r.detail]))}</div>`;
+}
+function tests(t) {
+  const box = document.getElementById("panel-tests");
+  if (!t.available) { box.innerHTML = `<p class="err">${t.note || "پوشش در دسترس نیست."}</p>`; return; }
+  const cov = t.percent_covered;
+  box.innerHTML = `
+    <div class="card">
+      <span class="badge ${cov >= 85 ? "pass" : "warn"}">پوشش ${fa(cov, 2)}٪</span>
+      <p class="note">آزمون پاس‌شده ${fa(t.passed)} · ناموفق ${fa(t.failed)} · عبارت‌ها ${fa(t.covered_lines)} از ${fa(t.num_statements)} (کف NFR-06 برابر ۸۵٪ است).</p>
+    </div>
+    <div class="sens"><h2>پوشش هر فایل محصول</h2>
+      ${bars(t.files.filter(f => f.stmts > 0).map(f => ({label: f.path, n: f.percent})), "n", 1)}
+    </div>
+    <div class="sens"><h2>تعداد آزمون در هر فایل تست</h2>
+      ${table(["فایل","تعداد آزمون"], t.test_modules.map(m => [m.file, fa(m.tests)]))}
+    </div>`;
+}
+fetch("/api/dashboard/bundle").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(data => {
+  document.getElementById("status").innerHTML = "نسخهٔ <bdi>" + data.version + "</bdi> · تاریخ تصویر <bdi>" + data.as_of + "</bdi>";
+  modules(data.operations);
+  technologies(data.technologies);
+  tests(data.tests);
+  document.getElementById("foot").textContent = data.note;
+}).catch(err => { document.getElementById("status").innerHTML = `<span class="err">داده خوانده نشد: ${err}</span>`; });
+</script>
+</body></html>
