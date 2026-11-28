@@ -13,6 +13,10 @@ def test_operations_are_deterministic_and_classified():
     assert a["lifecycle"]["n"] == 360
     assert a["filling"]["n"] == 6 * 60
     assert all(len(r["forecast"]) == 7 for r in a["distribution"]["regions"])
+    prod = a["production"]
+    assert prod["new"]["capacity"] == 1000 and prod["repair"]["capacity"] == 1500
+    assert prod["new"]["finished"] <= 1000 and prod["repair"]["finished"] <= 1500
+    assert sum(row["n"] for row in prod["new"]["by_weight"]) == prod["new"]["finished"]
 
 
 def test_bundle_keeps_measured_accuracy_apart_from_synthetic_volumes(client):

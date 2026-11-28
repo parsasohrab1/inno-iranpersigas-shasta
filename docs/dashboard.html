@@ -24,6 +24,11 @@ h3 { font-size:.92rem; margin:.2em 0 .55em; }
 .panel { display:none; }
 .panel.active { display:block; }
 .banner { background:#fff8e8; border:1px solid #ead7a2; border-radius:14px; padding:10px 14px; margin-bottom:14px; font-size:.82rem; line-height:1.75; }
+.glance { background:#fff; border:1px solid var(--line); border-radius:18px; padding:16px; margin:0 0 16px; border-right:6px solid #5b3a8c; }
+.lines { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.line { background:#f8fbfc; border:1px solid var(--line); border-radius:14px; padding:12px; }
+.util { height:10px; background:#e7eef2; border-radius:99px; overflow:hidden; margin:.4em 0 .2em; }
+.util i { display:block; height:100%; background:#5b3a8c; }
 .jumps { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:10px; margin-bottom:16px; }
 .jumps a { background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px 14px; color:inherit; text-decoration:none; border-top:4px solid var(--stripe, var(--acc)); min-height:96px; }
 .jumps a:hover { border-color:var(--stripe, var(--acc)); }
@@ -75,16 +80,22 @@ summary { cursor:pointer; color:var(--acc); font-size:.82rem; }
 table { width:100%; border-collapse:collapse; font-size:.82rem; }
 th, td { border-bottom:1px solid var(--line); padding:.4em .5em; text-align:right; white-space:nowrap; }
 th { color:var(--acc); }
+.caps { display:grid; gap:12px; }
+.cap { background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 16px; border-right:6px solid #2457a6; }
+.cap h2 { font-size:1.02rem; }
+.cap p { margin:.35em 0; font-size:.86rem; line-height:1.75; }
+.cap .src { color:var(--mut); font-size:.75rem; }
+.cap a { color:var(--acc); }
 footer { color:var(--mut); font-size:.75rem; margin-top:18px; line-height:1.8; }
 .err { color:#8a1f1f; }
 .legend-row { display:flex; flex-wrap:wrap; gap:10px 14px; margin:0 0 8px; font-size:.75rem; color:var(--mut); }
 .legend-row i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-left:4px; vertical-align:-1px; }
 @media (max-width: 900px) {
-  .jumps, .kpis, .actions { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .jumps, .kpis, .actions, .lines { grid-template-columns:repeat(2, minmax(0, 1fr)); }
   .charts { grid-template-columns:1fr; }
 }
 @media (max-width: 560px) {
-  .jumps, .kpis, .actions { grid-template-columns:1fr; }
+  .jumps, .kpis, .actions, .lines { grid-template-columns:1fr; }
 }
 </style></head><body><main>
 <h1>داشبورد LCIS</h1>
@@ -93,11 +104,89 @@ footer { color:var(--mut); font-size:.75rem; margin-top:18px; line-height:1.8; }
   <button type="button" role="tab" id="tab-modules" aria-selected="true" aria-controls="panel-modules">ماژول‌ها</button>
   <button type="button" role="tab" id="tab-tech" aria-selected="false" aria-controls="panel-tech">تکنولوژی‌های به‌کاررفته</button>
   <button type="button" role="tab" id="tab-tests" aria-selected="false" aria-controls="panel-tests">آزمون‌ها و پوشش</button>
+  <button type="button" role="tab" id="tab-next" aria-selected="false" aria-controls="panel-next">قابلیت‌های قابل اضافه‌شدن</button>
 </div>
 <p id="status" class="sub">در حال خواندن داده…</p>
 <div id="panel-modules" class="panel active" role="tabpanel"></div>
 <div id="panel-tech" class="panel" role="tabpanel"></div>
 <div id="panel-tests" class="panel" role="tabpanel"></div>
+<div id="panel-next" class="panel" role="tabpanel">
+  <div class="banner">این قابلیت‌ها هنوز در LCIS ساخته نشده‌اند. هر مورد از یک چالش یا نیازی آمده که در سایت عمومی پرسی ایران گاز نوشته شده است. عددها همان عددهای سایت‌اند و از مدل محصول حساب نشده‌اند.</div>
+  <div class="caps">
+    <article class="cap">
+      <h2>شارژ اوزان کیلوگرمی، جدا از کالیبراسیون ۱۵ پوند</h2>
+      <p>چالش: شارژ و توزیع سیلندر در اوزان مختلف، از جمله ۱۱، ۲۵، ۳۳، ۴۵ و ۵۰ کیلوگرم و لیفتراکی. موتور فعلی پر کردن روی ۱۵ پوند و جدول NIST است.</p>
+      <p>قابلیت: قاعدهٔ کم‌پری، پرپری و سطح ایمن برای هر یک از این ظرفیت‌ها، با برچسب جدا تا وقتی جدول کیلوگرمی منتشرشده وارد نشده.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/services/details/%D8%AA%D8%A7%D9%85%DB%8C%D9%86-%D9%88-%D8%B4%D8%A7%D8%B1%DA%98-%D8%B3%DB%8C%D9%84%D9%86%D8%AF%D8%B1%D9%87%D8%A7%DB%8C-%DA%AF%D8%A7%D8%B2%D9%85%D8%A7%DB%8C%D8%B9-%D8%AF%D8%B1-%D8%A7%D9%88%D8%B2%D8%A7%D9%86-%D9%85%D8%AE%D8%AA%D9%84%D9%81">تأمین و شارژ سیلندر در اوزان مختلف</a></p>
+    </article>
+    <article class="cap">
+      <h2>تصمیم بازسازی یا اسقاط روی پروندهٔ هر سیلندر</h2>
+      <p>چالش: بازسازی شامل بررسی بدنه، آزمون فشار، ترمیم یا تعویض قطعه، رنگ و تعویض شیر معیوب است. همزمان آگهی فروش حدود ۶۰۰ و ۸۵۰ تن ضایعات سیلندر، ۷۰۰ تن ضایعات پرس‌سیلندر و شیر برنجی از رده خارج روی سایت است.</p>
+      <p>قابلیت: صف بازسازی در برابر اسقاط، با ثبت نتیجهٔ آزمون فشار و تعویض شیر، تا سیلندر فرسوده یا به خط برگردد یا از گردش خارج شود.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/services/details/%D8%A8%D8%A7%D8%B2%D8%B3%D8%A7%D8%B2%DB%8C-%D8%B4%DB%8C%D8%B1-%D9%88-%D8%B3%DB%8C%D9%84%D9%86%D8%AF%D8%B1%D9%87%D8%A7%DB%8C-%D9%81%D8%B1%D8%B3%D9%88%D8%AF%D9%87">بازسازی شیر و سیلندرهای فرسوده</a> · <a href="https://persiirangas.ir/tenders">مزایده‌ها</a></p>
+    </article>
+    <article class="cap">
+      <h2>موجودی ۱۲ میلیون سیلندر به تفکیک شعبه</h2>
+      <p>چالش: بیش از ۶ میلیون مصرف‌کننده، افزون بر ۱۲ میلیون سیلندر در گردش، بیش از ۱۶۰۰ شعبه، ۳۷ شعبهٔ عملیاتی ملکی و ۲۴۰ تأسیسات مردمی تحت نظارت. تصویر فعلی داشبورد ۳۶۰ سیلندر در پنج منطقه است.</p>
+      <p>قابلیت: وضعیت و موجودی هر سیلندر روی شعبهٔ ملکی و تأسیسات تحت نظارت، تا ستاد و شعبه یک موجودی ببینند.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/">صفحهٔ اصلی، قابلیت‌های عملیاتی</a></p>
+    </article>
+    <article class="cap">
+      <h2>بالک صنفی و مخزن ذخیرهٔ ثابت</h2>
+      <p>چالش: تأمین مستمر بیمارستان، پادگان، مرکز درمانی و سایر مراکز عمومی به صورت بالک، و فراخوان تأمین مخازن ذخیرهٔ ثابت گاز مایع.</p>
+      <p>قابلیت: سطح مخزن ثابت و برنامهٔ شارژ بالک، جدا از سیلندر خانگی.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/services/details/%D8%AA%D8%A7%D9%85%DB%8C%D9%86-%DA%AF%D8%A7%D8%B2-%D9%85%D8%B1%D8%A7%DA%A9%D8%B2-%D8%B9%D9%85%D9%88%D9%85%DB%8C-%D8%A8%D8%B5%D9%88%D8%B1%D8%AA-%D8%A8%D8%A7%D9%84%DA%A9-%D8%B5%D9%86%D9%81%DB%8C-%D8%B5%D9%86%D8%B9%D8%AA%DB%8C">تأمین بالک مراکز عمومی</a> · <a href="https://persiirangas.ir/tenders">فراخوان مخازن ثابت</a></p>
+    </article>
+    <article class="cap">
+      <h2>جایگاه و اسکید اتوگاز</h2>
+      <p>چالش: طراحی و ساخت جایگاه LPG و فراخوان تجهیزات ۲۰ دستگاه اسکید اتوگاز. عضو هیئت‌مدیره نوشته گاز مایع در حمل‌ونقل ایران متناسب با ظرفیت تولید به کار نرفته و در بحث ناترازی بنزین معمولاً اتوگاز کنار گذاشته می‌شود.</p>
+      <p>قابلیت: تقاضای جایگاه اتوگاز و وضعیت ایمنی اسکید، جدا از چرخهٔ سیلندر خانگی. سهم بازار و درصد کاهش آلاینده در این تب عدد محصول نیست.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/services/details/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D9%88-%D8%B3%D8%A7%D8%AE%D8%AA-%D8%AC%D8%A7%DB%8C%DA%AF%D8%A7%D9%87-%D8%B3%D9%88%D8%AE%D8%AA-%D8%AE%D9%88%D8%AF%D8%B1%D9%88">جایگاه سوخت خودرو</a> · <a href="https://persiirangas.ir/publication/news/%D9%86%DA%AF%D8%A7%D9%87%DB%8C-%D8%A8%D9%87-%D8%AC%D8%A7%DB%8C%DA%AF%D8%A7%D9%87-%D9%81%D8%B1%D8%A7%D9%85%D9%88%D8%B4-%D8%B4%D8%AF%D9%87-%DA%AF%D8%A7%D8%B2-%D9%85%D8%A7%DB%8C%D8%B9">جایگاه فراموش‌شدهٔ گاز مایع</a></p>
+    </article>
+    <article class="cap">
+      <h2>ناوگان جاده‌ای، ریلی و نیاز صادرات</h2>
+      <p>چالش: بیش از ۳۰۰ کشندهٔ فعال، ناوگان ریلی واگن مخصوص، مناقصهٔ خرید ۳۰ کشنده، و فروش مخزن دو محور از رده خارج. نشست مدیران بر تقویت ناوگان برای نیازهای صادراتی تأکید کرده است. فراخوان مشارکت در صادرات به کشورهای همسایه و فروش ۱۵۰٬۰۰۰ سیلندر عراقی و ۲۰٬۰۰۰ قطعهٔ سیلندر ۱۱ کیلویی عراقی هم روی سایت است.</p>
+      <p>قابلیت: برنامهٔ اعزام کشنده و واگن، هشدار مخزن حمل از رده خارج، و پروندهٔ جدا برای سیلندر و قطعهٔ صادراتی تا با گردش داخلی قاطی نشود.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/">ناوگان در صفحهٔ اصلی</a> · <a href="https://persiirangas.ir/publication/news/%D8%A8%D8%B1%DA%AF%D8%B2%D8%A7%D8%B1%DB%8C-%DA%86%D9%87%D8%A7%D8%B1%D9%85%DB%8C%D9%86-%D9%86%D8%B4%D8%B3%D8%AA-%D8%B4%D9%88%D8%B1%D8%A7%DB%8C-%D9%85%D8%AF%DB%8C%D8%B1%D8%A7%D9%86-%D8%B4%D8%B1%DA%A9%D8%AA-%D9%BE%D8%B1%D8%B3%DB%8C-%D8%A7%DB%8C%D8%B1%D8%A7%D9%86-%DA%AF%D8%A7%D8%B2">نشست شورای مدیران</a> · <a href="https://persiirangas.ir/tenders">آگهی‌های صادرات و سیلندر عراقی</a></p>
+    </article>
+    <article class="cap">
+      <h2>برنامهٔ کارخانهٔ پرس‌سیلندر</h2>
+      <p>چالش: کارخانه ظرفیت تولید ۱۰۰۰ سیلندر نو و بازسازی ۱۵۰۰ سیلندر تعمیری را اعلام کرده، در حالی که ضایعات سیلندر به مزایده می‌رود.</p>
+      <p>قابلیت: برنامهٔ تولید نو و بازسازی در برابر صف اسقاط و نیاز شعب.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/">کارخانهٔ ساخت سیلندر در صفحهٔ اصلی</a></p>
+    </article>
+    <article class="cap">
+      <h2>کیفیت پر کردن در تأسیسات اجاره‌ای و مردمی</h2>
+      <p>چالش: اجارهٔ تأسیسات پرکنی لارستان و اصفهان، مدیریت پیمان بندرعباس، و ۲۴۰ تأسیسات مردمی تحت نظارت. نشست مدیران هم هماهنگی ستاد با شعب عملیاتی را هدف جلسات دانسته است.</p>
+      <p>قابلیت: همان قواعد پر کردن و بازرسی شعبهٔ ملکی، روی تأسیسات اجاره‌ای و مردمی، با گزارش انحراف به ستاد.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/tenders">آگهی‌های اجاره و پیمان</a> · <a href="https://persiirangas.ir/">تأسیسات تحت نظارت</a></p>
+    </article>
+    <article class="cap">
+      <h2>نگهداری پیشگیرانه و تجهیزات مازاد</h2>
+      <p>چالش: در نشست مدیران، مدیریت هزینه در تورم با اولویت نگهداری و تعمیرات پیشگیرانه برای حفظ ماشین‌آلات گره خورده، و دستور گزارش فوری تجهیزات مازاد به واحد مهندسی برای حفظ نقدینگی داده شده است.</p>
+      <p>قابلیت: تقویم نگهداری ماشین‌آلات پرکنی و حمل، و فهرست تجهیزات مازاد قابل واگذاری.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/publication/news/%D8%A8%D8%B1%DA%AF%D8%B2%D8%A7%D8%B1%DB%8C-%DA%86%D9%87%D8%A7%D8%B1%D9%85%DB%8C%D9%86-%D9%86%D8%B4%D8%B3%D8%AA-%D8%B4%D9%88%D8%B1%D8%A7%DB%8C-%D9%85%D8%AF%DB%8C%D8%B1%D8%A7%D9%86-%D8%B4%D8%B1%DA%A9%D8%AA-%D9%BE%D8%B1%D8%B3%DB%8C-%D8%A7%DB%8C%D8%B1%D8%A7%D9%86-%DA%AF%D8%A7%D8%B2">چهارمین نشست شورای مدیران</a></p>
+    </article>
+    <article class="cap">
+      <h2>سناریوی ناترازی انرژی، بدون عدد ساختگی</h2>
+      <p>چالش: پرسی ایران گاز توافقنامهٔ مشارکت در راهکارهای مدیریت ناترازی انرژی را با شرکت‌های تابعهٔ تاپیکو امضا کرده است. هدف اعلام‌شده کاهش ناترازی گاز طبیعی، امنیت انرژی و بهینه‌سازی مصرف گاز است.</p>
+      <p>قابلیت: سناریوی جابه‌جایی بخشی از تقاضا به گاز مایع. تا دادهٔ خود شرکت وارد نشود، این سناریو عدد دقت نشان نمی‌دهد.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/publication/news/%D8%B7%D8%B1%D8%AD-%D9%88%DB%8C%DA%98%D9%87-%D9%85%D9%82%D8%A7%D8%A8%D9%84%D9%87-%D8%A8%D8%A7-%D9%86%D8%A7%D8%AA%D8%B1%D8%A7%D8%B2%DB%8C-%D8%A7%D9%86%D8%B1%DA%98%DB%8C-%D8%A7%D8%B3%D8%AA%D8%A7%D8%B1%D8%AA-%D8%AE%D9%88%D8%B1%D8%AF">طرح مقابله با ناترازی انرژی</a></p>
+    </article>
+    <article class="cap">
+      <h2>گزارش سیلندر ناایمن به ستاد حراست</h2>
+      <p>چالش: سایت یک ستاد خبری حراست دارد. این کانال علنی شرکت است، نه یک مسیر پنهان.</p>
+      <p>قابلیت: ثبت گزارش سیلندر ناایمن یا شیر معیوب که به همان ستاد برسد و به پروندهٔ سیلندر وصل شود.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/contactSecurityCenter">ستاد خبری حراست</a></p>
+    </article>
+    <article class="cap">
+      <h2>تطبیق قواعد با استاندارد انجمن گازهای فشرده</h2>
+      <p>چالش: شرکت برای رعایت استانداردهای جهانی به انجمن گازهای فشرده پیوسته، و بازسازی را مطابق استانداردهای ملی و بین‌المللی توصیف کرده است. قواعد فعلی محصول به NIST و ۴۹ CFR آمریکا استناد می‌کنند.</p>
+      <p>قابلیت: نگاشت هر آستانه به استاندارد ملی یا انجمن، در کنار استناد فعلی، تا دو منبع با هم قاطی نشوند.</p>
+      <p class="src">منبع: <a href="https://persiirangas.ir/publication/news/%D8%B9%D8%B6%D9%88%DB%8C%D8%AA-%D8%B4%D8%B1%DA%A9%D8%AA-%C2%AB%D9%BE%D8%B1%D8%B3%DB%8C-%D8%A7%DB%8C%D8%B1%D8%A7%D9%86%E2%80%8C%DA%AF%D8%A7%D8%B2%C2%BB-%D8%AF%D8%B1%D8%A7%D9%86%D8%AC%D9%85%D9%86-%DA%AF%D8%A7%D8%B2%D9%87%D8%A7%DB%8C-%D9%81%D8%B4%D8%B1%D8%AF%D9%87%D8%9B">عضویت در انجمن گازهای فشرده</a></p>
+    </article>
+  </div>
+</div>
 <footer id="foot"></footer>
 </main>
 <script>
@@ -227,8 +316,25 @@ function modules(ops) {
       ${lineChart(r.history, r.forecast)}
       <p class="note">آخرین روز <b>${fa(r.history[r.history.length - 1], 0)}</b> · فردا <b>${fa(r.forecast[0].demand, 0)}</b> ${dist.unit} · مدل ${r.model}</p>
     </div>`).join("");
+  const lineCard = (title, line) => `
+      <article class="line">
+        <div class="kicker">${title}</div>
+        <h3>${line.state_label}</h3>
+        <b>${fa(line.finished)}</b> <span class="note">از ${fa(line.capacity)} · ${fa(line.utilization_pct, 1)}٪</span>
+        <div class="util" role="img" aria-label="${fa(line.utilization_pct, 1)} درصد ظرفیت"><i style="width:${Math.min(100, line.utilization_pct)}%"></i></div>
+        <p class="note">در جریان ${fa(line.in_process)} · منتظر آزمون فشار ${fa(line.held_pressure)} · اسقاط ${fa(line.scrap)}</p>
+        ${line.by_weight ? bars(line.by_weight) : ""}
+      </article>`;
+  const prod = ops.production;
   document.getElementById("panel-modules").innerHTML = `
     <div class="banner">حجم‌ها مصنوعی‌اند (بذر <bdi>${ops.seed}</bdi>، تا <bdi>${ops.as_of}</bdi>) و با موتور خود محصول طبقه‌بندی شده‌اند. نمودار هر بخش همین تصویر را نشان می‌دهد. دقت مدل‌ها در تب تکنولوژی است.</div>
+    <section class="glance" id="line">
+      <div class="mod-head">
+        <div><div class="kicker">${prod.plant}</div><h2>وضعیت خط تولید در یک نگاه</h2>
+        <p class="note">${prod.headline}. ${prod.note}</p></div>
+      </div>
+      <div class="lines">${lineCard("خط نو", prod.new)}${lineCard("خط بازسازی", prod.repair)}</div>
+    </section>
     <nav class="jumps">
       <a class="j1" href="#m1"><span class="kicker">ماژول ۱</span><strong>بازرسی ظاهری</strong><em>${fa(find(ins.by_verdict,"reject"))} رد در ${fa(ins.days)} روز</em></a>
       <a class="j2" href="#m2"><span class="kicker">ماژول ۲</span><strong>چرخهٔ عمر</strong><em>${fa(find(life.by_status,"overdue_for_test"))} آزمون معوق</em></a>

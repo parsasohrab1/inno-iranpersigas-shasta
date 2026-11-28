@@ -220,6 +220,62 @@ def _distribution(rng: np.random.Generator) -> dict:
     return {"unit": "کپسول در روز", "history_days": 120, "horizon_days": 7, "regions": regions}
 
 
+# Capacities published on the company homepage. Today's counts below them are synthetic.
+NEW_CAPACITY = 1000
+REPAIR_CAPACITY = 1500
+# Weights the filling service lists. The mix across them is synthetic.
+_NEW_WEIGHTS = (("۱۱ کیلو", 45), ("۲۵ کیلو", 15), ("۳۳ کیلو", 8), ("۴۵ کیلو", 12), ("۵۰ کیلو", 15), ("لیفتراکی", 5))
+
+
+def _line_state(finished: int, capacity: int) -> tuple[str, str]:
+    ratio = finished / capacity
+    if ratio >= 0.9:
+        return "full", "نزدیک ظرفیت"
+    if ratio >= 0.8:
+        return "running", "در حال کار"
+    return "slow", "پایین‌تر از ۸۰٪ ظرفیت"
+
+
+def _production(rng: np.random.Generator) -> dict:
+    """One shift at Pers Cylinder, against the capacities the public site states."""
+    def one(capacity: int) -> dict:
+        finished = int(round(capacity * float(rng.uniform(0.74, 0.96))))
+        in_process = int(round(capacity * float(rng.uniform(0.04, 0.11))))
+        held = int(round(finished * float(rng.uniform(0.012, 0.035))))
+        scrap = int(round(finished * float(rng.uniform(0.006, 0.018))))
+        code, label = _line_state(finished, capacity)
+        return {
+            "capacity": capacity,
+            "finished": finished,
+            "in_process": in_process,
+            "held_pressure": held,
+            "scrap": scrap,
+            "utilization_pct": round(100.0 * finished / capacity, 1),
+            "state": code,
+            "state_label": label,
+        }
+
+    new = one(NEW_CAPACITY)
+    labels, weights = zip(*_NEW_WEIGHTS)
+    draw = rng.multinomial(new["finished"], np.array(weights) / sum(weights))
+    new["by_weight"] = [{"label": label, "n": int(n)} for label, n in zip(labels, draw)]
+    repair = one(REPAIR_CAPACITY)
+    slow = [name for name, line in (("نو", new), ("بازسازی", repair)) if line["state"] == "slow"]
+    if slow:
+        headline = "خط " + " و ".join(slow) + " پایین‌تر از ۸۰٪ ظرفیت اعلام‌شده است"
+    else:
+        headline = "هر دو خط در حال کارند"
+    return {
+        "plant": "پرس‌سیلندر",
+        "unit": "سیلندر در این نوبت",
+        "headline": headline,
+        "new": new,
+        "repair": repair,
+        "note": ("ظرفیت ۱۰۰۰ سیلندر نو و ۱۵۰۰ سیلندر تعمیری از صفحهٔ اصلی سایت است. "
+                 "شمار این نوبت مصنوعی است. برنامهٔ تولید در برابر نیاز شعب هنوز ساخته نشده."),
+    }
+
+
 def build_operations() -> dict:
     """One seeded draw. Calling it twice returns the same numbers."""
     rng = np.random.default_rng(SEED)
@@ -231,4 +287,5 @@ def build_operations() -> dict:
         "lifecycle": _fleet(rng),
         "filling": _fillings(rng),
         "distribution": _distribution(rng),
+        "production": _production(rng),
     }
